@@ -3,3 +3,4 @@ out/tests/
 out/*.mkv
 out/*.wav
 __pycache__/
+out/*.mp4
