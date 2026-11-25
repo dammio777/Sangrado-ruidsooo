@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Entreverde · Así se verían tus redes</title>
+<style>
+@font-face{font-family:'Cormorant Garamond';font-weight:300;font-style:normal;src:url(../assets/fonts/cormorant-garamond-latin-300-normal.woff2)}
+@font-face{font-family:'Cormorant Garamond';font-weight:400;font-style:normal;src:url(../assets/fonts/cormorant-garamond-latin-400-normal.woff2)}
+@font-face{font-family:'Cormorant Garamond';font-weight:500;font-style:normal;src:url(../assets/fonts/cormorant-garamond-latin-500-normal.woff2)}
+@font-face{font-family:'Cormorant Garamond';font-weight:600;font-style:normal;src:url(../assets/fonts/cormorant-garamond-latin-600-normal.woff2)}
+@font-face{font-family:'Cormorant Garamond';font-weight:400;font-style:italic;src:url(../assets/fonts/cormorant-garamond-latin-400-italic.woff2)}
+@font-face{font-family:'Cormorant Garamond';font-weight:500;font-style:italic;src:url(../assets/fonts/cormorant-garamond-latin-500-italic.woff2)}
+@font-face{font-family:'Cormorant Garamond';font-weight:600;font-style:italic;src:url(../assets/fonts/cormorant-garamond-latin-600-italic.woff2)}
+@font-face{font-family:'Inter';font-weight:400;src:url(../assets/fonts/inter-latin-400-normal.woff2)}
+@font-face{font-family:'Inter';font-weight:500;src:url(../assets/fonts/inter-latin-500-normal.woff2)}
+@font-face{font-family:'Inter';font-weight:600;src:url(../assets/fonts/inter-latin-600-normal.woff2)}
+@font-face{font-family:'Montserrat';font-weight:500;src:url(../assets/fonts/montserrat-latin-500-normal.woff2)}
+@font-face{font-family:'Montserrat';font-weight:600;src:url(../assets/fonts/montserrat-latin-600-normal.woff2)}
+
+:root{--W:1080px;--H:1920px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#44493A}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--primario)}
+.abs{position:absolute}
+.scene{position:absolute;inset:0;overflow:hidden;display:none}
+.fill{position:absolute;inset:0}
+.pattern{position:absolute;left:-200px;top:-200px;width:1480px;height:2320px;will-change:transform}
+.giant{position:absolute;white-space:nowrap;font-family:var(--f-tit);font-weight:500;line-height:.8;color:rgba(255,255,255,.14);letter-spacing:-.02em}
+.label{font-family:var(--f-eti);font-weight:600;text-transform:uppercase;letter-spacing:.32em}
+.tit{font-family:var(--f-tit);font-weight:500;line-height:1.02}
+.txt{font-family:var(--f-txt)}
+.mask{overflow:hidden;display:block}
+.mask>span{display:inline-block;will-change:transform}
+.glass{background:rgba(236,235,232,.62);border:1.5px solid rgba(255,255,255,.8);box-shadow:0 20px 60px rgba(42,45,35,.25)}
+.logoc{border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--secundario);box-shadow:0 0 0 10px var(--claro),0 20px 60px rgba(42,45,35,.3);color:var(--claro)}
+.logoc svg{display:block}
+.photo{position:absolute;background-size:cover;background-position:center;will-change:transform}
+img.ph{position:absolute;display:block;will-change:transform}
+.ico{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+#vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 70% at 50% 50%,rgba(0,0,0,0) 62%,rgba(20,22,16,.32) 100%);z-index:50}
+
+/* ---------- Escena 1: interfaz ---------- */
+#s1 .panel{left:90px;top:300px;width:900px;height:960px;border-radius:52px;overflow:hidden}
+#s1 .bar{position:absolute;left:0;right:0;top:0;height:78px;display:flex;align-items:center;padding:0 34px;gap:14px;border-bottom:1.5px solid rgba(42,45,35,.12)}
+#s1 .dot{width:20px;height:20px;border-radius:50%}
+#s1 .bartxt{margin-left:18px;font-family:var(--f-eti);font-weight:500;font-size:20px;letter-spacing:.18em;color:var(--oscuro);text-transform:uppercase}
+#s1 .sw{position:absolute;width:118px;height:118px;border-radius:28px;box-shadow:0 10px 26px rgba(42,45,35,.22)}
+#s1 .swl{position:absolute;width:118px;text-align:center;font-family:var(--f-eti);font-weight:600;font-size:17px;letter-spacing:.06em;color:var(--oscuro)}
+#s1 .sec{position:absolute;font-family:var(--f-eti);font-weight:600;font-size:19px;letter-spacing:.3em;color:var(--oscuro);text-transform:uppercase;opacity:.75}
+
+/* ---------- Escena 2: teléfono ---------- */
+#phoneWrap{position:absolute;left:160px;top:300px;width:760px;height:1560px;perspective:2200px;transform:scale(.9);transform-origin:50% 0}
+#phone{position:absolute;inset:0;border-radius:100px;background:#151613;box-shadow:0 50px 90px rgba(30,33,25,.45),inset 0 0 0 3px #2d2f29;transform-origin:50% 50%}
+#screen{position:absolute;left:14px;top:14px;width:732px;height:1532px;border-radius:86px;overflow:hidden;background:#0C0E0B;color:#F3F3F1}
+#island{position:absolute;left:291px;top:20px;width:150px;height:44px;border-radius:22px;background:#000;z-index:30}
+#profile{position:absolute;left:0;top:0;width:732px}
+.stat b{display:block;font:600 34px/1.1 var(--f-txt)}
+.stat span{font:400 22px/1.2 var(--f-txt);color:#d6d6d3}
+.post{position:absolute;width:242px;height:322px;overflow:hidden;background:#222}
+.post img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.post .wm{position:absolute;left:12px;bottom:12px;width:26px;color:var(--claro);opacity:.9}
+.hl{position:absolute;width:128px;text-align:center}
+.hl .c{width:128px;height:128px;border-radius:50%;padding:7px;background:#3a3d35}
+.hl .c div{width:100%;height:100%;border-radius:50%;background-size:cover;background-position:center;border:4px solid #0C0E0B}
+.hl p{font:400 21px/1.3 var(--f-txt);margin-top:10px}
+#reel{position:absolute;overflow:hidden;background:#000;z-index:10}
+#topband{position:absolute;left:0;top:0;width:732px;height:172px;background:#0C0E0B;z-index:9}
+.bubble{position:absolute;left:30px;display:flex;align-items:center;gap:16px;padding:16px 26px 16px 16px;border-radius:40px;background:rgba(236,235,232,.9);color:var(--oscuro);font:500 27px/1 var(--f-txt);box-shadow:0 12px 30px rgba(0,0,0,.25);white-space:nowrap}
+.av{border-radius:50%;flex:none}
+.notif{position:absolute;left:22px;width:688px;padding:22px 24px;border-radius:38px;background:rgba(236,235,232,.94);color:var(--oscuro);display:flex;gap:20px;align-items:center;box-shadow:0 16px 40px rgba(0,0,0,.3);z-index:40}
+.notif .app{width:74px;height:74px;border-radius:20px;background:var(--secundario);flex:none;display:flex;align-items:center;justify-content:center;color:var(--claro)}
+.notif .t1{font:600 23px/1.2 var(--f-txt)}
+.notif .t2{font:400 25px/1.25 var(--f-txt);margin-top:4px}
+.tag{display:inline-block;font:600 15px/1 var(--f-eti);letter-spacing:.2em;text-transform:uppercase;padding:6px 10px;border-radius:10px;background:rgba(68,73,58,.14);color:var(--primario);margin-left:10px;vertical-align:middle}
+
+/* ---------- Escena 3: montaje ---------- */
+.shot{position:absolute;inset:0;overflow:hidden}
+.shot .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(42,45,35,.55) 0%,rgba(42,45,35,0) 24%,rgba(42,45,35,0) 45%,rgba(42,45,35,.78) 82%,rgba(42,45,35,.9) 100%)}
+.cap{position:absolute;left:70px;right:70px;color:var(--claro)}
+.chip{position:absolute;left:70px;top:170px;padding:18px 26px;border-radius:30px;font:600 20px/1 var(--f-eti);letter-spacing:.3em;text-transform:uppercase;color:var(--oscuro)}
+.count{position:absolute;right:70px;top:182px;font:600 24px/1 var(--f-eti);letter-spacing:.2em;color:var(--claro)}
+
+/* ---------- Escena 4 ---------- */
+.pola{position:absolute;width:420px;height:500px;background:#F4F2EC;border-radius:10px;padding:20px 20px 0;box-shadow:0 30px 70px rgba(20,22,16,.4)}
+.pola .im{width:380px;height:380px;background-size:cover;background-position:center;border-radius:4px}
+.pola p{font:500 italic 30px/1 var(--f-tit);color:var(--primario);text-align:center;margin-top:24px}
+.orb{position:absolute;width:96px;height:96px;border-radius:50%;padding:24px;color:var(--primario)}
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="brand.js"></script>
+<script>
+(() => {
+const B = window.BRAND, C = B.color;
+const root = document.documentElement.style;
+for (const [k, v] of Object.entries(C)) root.setProperty('--' + k, v);
+root.setProperty('--f-tit', B.fuentes.titular);
+root.setProperty('--f-txt', B.fuentes.texto);
+root.setProperty('--f-eti', B.fuentes.etiqueta);
+
+const IMG = '../assets/img/';
+const stage = document.getElementById('stage');
+const el = (tag, cls, parent, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; (parent || stage).appendChild(e); return e; };
+const css = (e, o) => Object.assign(e.style, o);
+
+// ---------------------------------------------------------- utilidades
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const P = (t, a, b) => clamp((t - a) / (b - a));
+const eo = x => 1 - Math.pow(1 - x, 3);                        // ease-out cúbica
+const eio = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const back = x => { const c1 = .9, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }; // rebote ≤5 %
+const lerp = (a, b, x) => a + (b - a) * x;
+const sin = Math.sin, PI = Math.PI;
+
+// ---------------------------------------------------------- recursos
+const ICON = {
+  heart: '<svg class="ico" viewBox="0 0 24 24"><path d="M12 20.3l-1.3-1.2C5.6 14.6 2.5 11.7 2.5 8.1 2.5 5.3 4.7 3.2 7.4 3.2c1.7 0 3.4.8 4.6 2.2 1.2-1.4 2.9-2.2 4.6-2.2 2.7 0 4.9 2.1 4.9 4.9 0 3.6-3.1 6.5-8.2 11L12 20.3z"/></svg>',
+  heartF: '<svg class="ico" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M12 20.3l-1.3-1.2C5.6 14.6 2.5 11.7 2.5 8.1 2.5 5.3 4.7 3.2 7.4 3.2c1.7 0 3.4.8 4.6 2.2 1.2-1.4 2.9-2.2 4.6-2.2 2.7 0 4.9 2.1 4.9 4.9 0 3.6-3.1 6.5-8.2 11L12 20.3z"/></svg>',
+  comment: '<svg class="ico" viewBox="0 0 24 24"><path d="M20.6 11.6a8.6 8.6 0 0 1-12.4 7.7L3.2 20.8l1.5-4.7a8.6 8.6 0 1 1 15.9-4.5z"/></svg>',
+  send: '<svg class="ico" viewBox="0 0 24 24"><path d="M21.5 3 10.2 10.4M21.5 3l-6.9 18-4.4-10.6L2.8 6.7 21.5 3z"/></svg>',
+  dots: '<svg class="ico" viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>',
+  bell: '<svg class="ico" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.8 2H4.2L6 16zM10 20.5a2.2 2.2 0 0 0 4 0"/></svg>',
+  back: '<svg class="ico" viewBox="0 0 24 24"><path d="M20 12H4m6-7-7 7 7 7"/></svg>',
+  grid: '<svg class="ico" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M9.2 3.5v17M14.8 3.5v17M3.5 9.2h17M3.5 14.8h17"/></svg>',
+  reels: '<svg class="ico" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M10 9.2v5.6l4.8-2.8z"/></svg>',
+  tagged: '<svg class="ico" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><circle cx="12" cy="10" r="3"/><path d="M6.5 20c1-3 3-4.4 5.5-4.4s4.5 1.4 5.5 4.4"/></svg>',
+  check: '<svg class="ico" viewBox="0 0 24 24" style="stroke-width:3"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  music: '<svg class="ico" viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>',
+};
+const LOGO = {};
+async function loadLogos() {
+  for (const n of ['logo_completo', 'logo_nombre', 'logo_marca']) LOGO[n] = await (await fetch('../assets/logo/' + n + '.svg')).text();
+}
+const svgUrl = s => 'url("data:image/svg+xml;utf8,' + encodeURIComponent(s) + '")';
+const PAT = {
+  hojas: (col) => svgUrl(`<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180"><g fill="none" stroke="${col}" stroke-width="2.2" stroke-linecap="round"><path d="M30 60c10-22 34-28 52-20-6 20-30 32-52 20z"/><path d="M30 60c16-8 32-14 52-20"/><path d="M120 150c8-20 30-26 46-18-6 18-26 28-46 18z"/><path d="M120 150c14-7 28-12 46-18"/></g></svg>`),
+  ondas: (col) => svgUrl(`<svg xmlns="http://www.w3.org/2000/svg" width="240" height="64" viewBox="0 0 240 64"><path d="M0 32 Q30 12 60 32 T120 32 T180 32 T240 32" fill="none" stroke="${col}" stroke-width="3"/></svg>`),
+  puntos: (col) => svgUrl(`<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="3" fill="${col}"/></svg>`),
+};
+function patternLayer(parent, kind, col, size, opacity) {
+  const d = el('div', 'pattern', parent);
+  css(d, { backgroundImage: PAT[kind](col), backgroundSize: size, opacity });
+  return d;
+}
+function maskLines(parent, lines, cls, style) {
+  // titulares: cada línea sube desde una máscara
+  return lines.map(l => {
+    const m = el('div', 'mask', parent);
+    const s = el('span', cls || '', m, l);
+    if (style) css(s, style);
+    return s;
+  });
+}
+function lettersOf(parent, text) {
+  return [...text].map(ch => { const s = el('span', '', parent, ch === ' ' ? '&nbsp;' : ch); s.style.display = 'inline-block'; return s; });
+}
+const show = (e, on) => { e.style.display = on ? 'block' : 'none'; };
+
+// ---------------------------------------------------------- construcción
+let S = {};
+async function build() {
+  await loadLogos();
+
+  // ================= ESCENA 1 · Apertura: interfaz de marca =================
+  const s1 = el('div', 'scene', stage); s1.id = 's1'; s1.style.background = C.primario;
+  S.s1 = s1;
+  S.s1pat = patternLayer(s1, 'hojas', C.claro, '180px 180px', .10);
+  S.s1giant = el('div', 'giant', s1, 'entreverde'); css(S.s1giant, { fontSize: '400px', top: '1380px', left: '-60px', color: 'rgba(255,255,255,.12)' });
+  S.s1label = el('div', 'label abs', s1, 'Imagina tus redes así'); css(S.s1label, { top: '196px', width: '1080px', textAlign: 'center', fontSize: '26px', color: C.claro });
+  const panel = el('div', 'panel abs glass', s1); S.s1panel = panel; panel.style.background = 'rgba(236,235,232,.70)';
+  const bar = el('div', 'bar', panel);
+  [C.corten, C.acento, C.secundario].forEach(c => { const d = el('div', 'dot', bar); d.style.background = c; });
+  el('div', 'bartxt', bar, 'entreverde · kit de marca');
+  // logo en círculo (como la foto de perfil)
+  S.s1logo = el('div', 'logoc abs', panel, LOGO.logo_completo);
+  css(S.s1logo, { left: '290px', top: '120px', width: '320px', height: '320px' });
+  css(S.s1logo.firstChild, { width: '250px' });
+  S.s1secPal = el('div', 'sec', panel, 'Paleta'); css(S.s1secPal, { left: '40px', top: '500px' });
+  const sw = [['primario', C.primario], ['secundario', C.secundario], ['medio', C.medio], ['salvia', C.salvia], ['acento', C.acento], ['claro', C.claro]];
+  S.s1sw = sw.map(([n, c], i) => {
+    const x = 40 + i * 140;
+    const d = el('div', 'sw', panel); css(d, { left: x + 'px', top: '548px', background: c, border: n === 'claro' ? '1.5px solid rgba(42,45,35,.18)' : 'none' });
+    const l = el('div', 'swl', panel, c.toUpperCase()); css(l, { left: x + 'px', top: '682px' });
+    return [d, l];
+  });
+  S.s1secTip = el('div', 'sec', panel, 'Tipografía'); css(S.s1secTip, { left: '40px', top: '752px' });
+  S.s1tip = el('div', 'abs', panel, `<span style="font:500 92px/1 ${B.fuentes.titular};color:${C.oscuro}">Aa</span><span style="font:400 italic 92px/1 ${B.fuentes.titular};color:${C.secundario};margin-left:14px">Aa</span><span style="font:600 23px/1.4 ${B.fuentes.etiqueta};letter-spacing:.14em;color:${C.oscuro};margin-left:30px;display:inline-block;vertical-align:middle;text-transform:uppercase">Cormorant<br>Inter · Montserrat</span>`);
+  css(S.s1tip, { left: '40px', top: '790px' });
+  // barra de progreso
+  S.s1progT = el('div', 'abs', panel, 'Preparando tus redes…'); css(S.s1progT, { left: '40px', top: '900px', font: `500 21px/1 ${B.fuentes.etiqueta}`, letterSpacing: '.12em', color: C.oscuro });
+  const pb = el('div', 'abs', panel); css(pb, { left: '440px', top: '904px', width: '420px', height: '14px', borderRadius: '7px', background: 'rgba(42,45,35,.15)', overflow: 'hidden' });
+  S.s1prog = el('div', 'abs', pb); css(S.s1prog, { left: 0, top: 0, height: '14px', width: '420px', background: C.secundario, transformOrigin: '0 0' });
+  // titular
+  const h = el('div', 'abs', s1); css(h, { left: '70px', top: '1300px', width: '940px', textAlign: 'center', color: C.claro });
+  S.s1h = maskLines(h, ['Así serían', 'tus redes sociales', '<i style="color:' + C.acento + '">si trabajaras con nosotros.</i>'], 'tit', { fontSize: '76px' });
+
+  // ================= ESCENA 2 · Teléfono con el perfil =================
+  const s2 = el('div', 'scene', stage); S.s2 = s2; s2.style.background = C.secundario;
+  S.s2pat = patternLayer(s2, 'ondas', C.primario, '240px 64px', .16);
+  S.s2giant = el('div', 'giant', s2, 'COMPARTE'); css(S.s2giant, { fontSize: '330px', top: '40px', left: '-40px' });
+  S.s2giant2 = el('div', 'giant', s2, 'COMPARTE'); css(S.s2giant2, { fontSize: '330px', top: '1650px', left: '-500px' });
+  const pw = el('div', '', s2); pw.id = 'phoneWrap'; S.pw = pw;
+  const ph = el('div', '', pw); ph.id = 'phone'; S.phone = ph;
+  const sc = el('div', '', ph); sc.id = 'screen'; S.screen = sc;
+  el('div', '', sc).id = 'island';
+  // barra de estado
+  const sb = el('div', 'abs', sc, `<span style="font:600 26px/1 ${B.fuentes.texto}">9:41</span>`); css(sb, { left: '78px', top: '30px', zIndex: 31 });
+  const sbr = el('div', 'abs', sc, `<svg width="104" height="26" viewBox="0 0 104 26"><g fill="#F3F3F1"><rect x="0" y="16" width="5" height="8" rx="1.5"/><rect x="8" y="11" width="5" height="13" rx="1.5"/><rect x="16" y="6" width="5" height="18" rx="1.5"/><rect x="24" y="1" width="5" height="23" rx="1.5"/><rect x="60" y="3" width="38" height="20" rx="6" fill="none" stroke="#F3F3F1" stroke-width="2"/><rect x="63.5" y="6.5" width="28" height="13" rx="3"/><rect x="100" y="9" width="3" height="8" rx="1"/></g><path d="M38 12a12 12 0 0 1 16 0M41 16a7 7 0 0 1 10 0" fill="none" stroke="#F3F3F1" stroke-width="2.6" stroke-linecap="round"/><circle cx="46" cy="21" r="2.4" fill="#F3F3F1"/></svg>`);
+  css(sbr, { right: '58px', top: '30px', zIndex: 31 });
+  const prof = el('div', '', sc); prof.id = 'profile'; S.profile = prof;
+  // navegación
+  el('div', '', sc).id = 'topband';
+  const nav = el('div', 'abs', sc); css(nav, { left: 0, top: '84px', width: '732px', height: '80px', zIndex: 9 });
+  const ib = (html, x, w) => { const d = el('div', 'abs', nav, html); css(d, { left: x + 'px', top: '18px', width: w + 'px', height: w + 'px', color: '#F3F3F1' }); return d; };
+  ib(ICON.back, 30, 42); ib(ICON.bell, 590, 40); ib(ICON.dots, 652, 40);
+  const un = el('div', 'abs', nav, B.usuario); css(un, { left: '100px', top: '16px', font: `600 38px/1.2 ${B.fuentes.texto}` });
+  // encabezado
+  S.avatar = el('div', 'logoc abs', prof, LOGO.logo_completo);
+  css(S.avatar, { left: '36px', top: '186px', width: '186px', height: '186px', boxShadow: `0 0 0 6px #0C0E0B, 0 0 0 10px ${C.acento}` });
+  css(S.avatar.firstChild, { width: '150px' });
+  const stats = [[B.stats.publicaciones, 'publicaciones'], [B.stats.seguidores, 'seguidores'], [B.stats.seguidos, 'seguidos']];
+  const nm = el('div', 'abs', prof, B.nombre); css(nm, { left: '262px', top: '196px', font: `600 30px/1 ${B.fuentes.texto}` });
+  stats.forEach(([n, l], i) => { const d = el('div', 'abs stat', prof, `<b>${n}</b><span>${l}</span>`); css(d, { left: (262 + i * 158) + 'px', top: '250px' }); });
+  const bio = el('div', 'abs', prof, B.bio.join('<br>')); css(bio, { left: '36px', top: '402px', width: '680px', font: `400 26px/1.45 ${B.fuentes.texto}` });
+  // botones
+  const b1 = el('div', 'abs', prof, 'Seguir'); css(b1, { left: '36px', top: '540px', width: '318px', height: '66px', borderRadius: '18px', background: C.secundario, font: `600 26px/66px ${B.fuentes.texto}`, textAlign: 'center' });
+  const b2 = el('div', 'abs', prof, 'Mensaje'); css(b2, { left: '370px', top: '540px', width: '318px', height: '66px', borderRadius: '18px', background: '#262823', font: `600 26px/66px ${B.fuentes.texto}`, textAlign: 'center' });
+  // historias destacadas (reales: Ubicación y Menú)
+  [['📍 Ubicación', 'g_aviso'], ['🍸 Menú', 'g_menu']].forEach(([l, im], i) => {
+    const d = el('div', 'hl', prof, `<div class="c"><div style="background-image:url(${IMG + im}.jpg)"></div></div><p>${l}</p>`);
+    css(d, { left: (36 + i * 160) + 'px', top: '640px' });
+  });
+  // pestañas
+  const tabs = el('div', 'abs', prof); css(tabs, { left: 0, top: '846px', width: '732px', height: '76px', borderBottom: '1px solid #26281f' });
+  [ICON.grid, ICON.reels, ICON.tagged].forEach((ic, i) => { const d = el('div', 'abs', tabs, ic); css(d, { left: (100 + i * 244) + 'px', top: '14px', width: '44px', height: '44px', color: i ? '#8d8f88' : '#F3F3F1' }); });
+  const ul = el('div', 'abs', tabs); css(ul, { left: '0', bottom: '-1px', width: '244px', height: '3px', background: '#F3F3F1' });
+  // cuadrícula de 9 publicaciones
+  const posts = [
+    { img: 'g_aviso' },
+    { design: 'lema' },
+    { img: 'g_terraza' },
+    { img: 'g_noche', titular: 'bajo el cielo<br>abierto' },
+    { img: 'g_vertical' },
+    { design: 'santa' },
+    { img: 'g_frente' },
+    { img: 'g_menu', franja: 'El menú' },
+    { img: 'g_angulo' },
+  ];
+  S.posts = posts.map((p, i) => {
+    const d = el('div', 'post', prof); const col = i % 3, row = Math.floor(i / 3);
+    css(d, { left: (col * 245) + 'px', top: (926 + row * 325) + 'px' });
+    if (p.img) {
+      el('img', '', d).src = IMG + p.img + '.jpg';
+      if (p.titular) {
+        const g = el('div', 'abs', d); css(g, { inset: 0, background: 'linear-gradient(180deg,rgba(68,73,58,0) 35%,rgba(68,73,58,.85) 100%)' });
+        const t = el('div', 'abs', d, p.titular); css(t, { left: '16px', right: '10px', bottom: '22px', font: `500 italic 38px/0.95 ${B.fuentes.titular}`, color: C.claro });
+      } else if (p.franja) {
+        const t = el('div', 'abs', d, p.franja); css(t, { left: 0, right: 0, bottom: 0, height: '46px', background: C.primario, color: C.claro, font: `600 15px/46px ${B.fuentes.etiqueta}`, letterSpacing: '.3em', textTransform: 'uppercase', textAlign: 'center' });
+      } else {
+        const w = el('div', 'wm', d, LOGO.logo_marca);
+      }
+      // marco fino de marca
+      const f = el('div', 'abs', d); css(f, { inset: '8px', border: `1.5px solid rgba(236,235,232,.55)` });
+    } else if (p.design === 'lema') {
+      css(d, { background: C.primario });
+      patternLayer(d, 'hojas', C.claro, '120px 120px', .08);
+      const m = el('div', 'abs', d, LOGO.logo_marca); css(m, { left: '100px', top: '34px', width: '42px', color: C.claro });
+      const t = el('div', 'abs', d, '“Tragos<br>y comida<br>que se<br><i style="color:' + C.acento + '">comparten”</i>'); css(t, { left: '0', right: '0', top: '104px', textAlign: 'center', font: `500 40px/1 ${B.fuentes.titular}`, color: C.claro });
+    } else if (p.design === 'santa') {
+      css(d, { background: C.acento });
+      const t = el('div', 'abs', d, 'Santa<br>Elena'); css(t, { left: '0', right: '0', top: '62px', textAlign: 'center', font: `500 58px/0.92 ${B.fuentes.titular}`, color: C.primario });
+      const l = el('div', 'abs', d, 'Fines de semana<br>4 pm a media noche'); css(l, { left: '0', right: '0', top: '200px', textAlign: 'center', font: `600 14px/1.6 ${B.fuentes.etiqueta}`, letterSpacing: '.18em', textTransform: 'uppercase', color: C.primario });
+    }
+    return d;
+  });
+  // Reel
+  const reel = el('div', '', sc); reel.id = 'reel'; S.reel = reel;
+  S.reelImg = el('img', 'ph', reel); S.reelImg.src = IMG + 'hd_banderas_noche.jpg';
+  const rs = el('div', 'abs', reel); css(rs, { inset: 0, background: 'linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,0) 18%,rgba(0,0,0,0) 55%,rgba(0,0,0,.65) 100%)' });
+  S.reelUI = el('div', 'abs', reel); css(S.reelUI, { left: 0, top: 0, width: '732px', height: '1532px' });
+  const rt = el('div', 'abs', S.reelUI, 'Reels'); css(rt, { left: '40px', top: '96px', font: `600 38px/1 ${B.fuentes.texto}`, color: '#fff' });
+  S.rIcons = {};
+  [['heart', 920], ['comment', 1030], ['send', 1140], ['dots', 1250]].forEach(([k, y]) => {
+    const d = el('div', 'abs', S.reelUI, ICON[k]); css(d, { left: '640px', top: y + 'px', width: '58px', height: '58px', color: '#fff', filter: 'drop-shadow(0 2px 6px rgba(0,0,0,.4))' }); S.rIcons[k] = d;
+  });
+  const cap = el('div', 'abs', S.reelUI); css(cap, { left: '36px', top: '1246px', width: '580px', color: '#fff' });
+  const ca = el('div', 'logoc', cap, LOGO.logo_marca); css(ca, { width: '64px', height: '64px', display: 'inline-flex', verticalAlign: 'middle', boxShadow: `0 0 0 3px ${C.claro}` }); css(ca.firstChild, { width: '30px' });
+  el('span', '', cap, `<span style="font:600 27px/1 ${B.fuentes.texto};margin:0 16px;vertical-align:middle">${B.usuario}</span><span style="display:inline-block;vertical-align:middle;padding:9px 18px;border:2px solid rgba(255,255,255,.85);border-radius:14px;font:600 22px/1 ${B.fuentes.texto}">Seguir</span>`);
+  el('div', '', cap, `<div style="font:400 26px/1.35 ${B.fuentes.texto};margin-top:18px">Tragos y comida que se comparten</div><div style="font:400 22px/1 ${B.fuentes.texto};margin-top:14px;opacity:.9"><span style="display:inline-block;width:24px;height:24px;vertical-align:-4px;margin-right:8px">${ICON.music}</span>Audio original · ${B.usuario}</div>`);
+  // corazones flotando
+  S.hearts = Array.from({ length: 12 }, (_, i) => { const d = el('div', 'abs', S.reelUI, ICON.heartF); css(d, { width: '52px', height: '52px', color: [C.acento, '#ff5a6e', C.claro, '#ff5a6e'][i % 4], left: '643px', top: '930px', opacity: 0 }); return d; });
+  S.bigHeart = el('div', 'abs', S.reelUI, ICON.heartF); css(S.bigHeart, { left: '266px', top: '560px', width: '200px', height: '200px', color: '#fff', filter: 'drop-shadow(0 8px 24px rgba(0,0,0,.35))', opacity: 0 });
+  // comentarios
+  const comments = ['¡Quiero ir!', 'Etiqueto a mi parcero 👇', '¿Vamos el sábado?'];
+  const avc = [C.acento, C.claro, C.corten];
+  S.bubbles = comments.map((c, i) => { const d = el('div', 'bubble', S.reelUI, `<div class="av" style="width:50px;height:50px;background:${avc[i]};box-shadow:inset 0 0 0 3px rgba(42,45,35,.15)"></div>${c}`); css(d, { top: (760 + i * 104) + 'px' }); return d; });
+  // tarjeta "Enviado a 3 amigos"
+  S.sent = el('div', 'abs', S.reelUI); css(S.sent, { left: '96px', top: '520px', width: '540px', padding: '36px 30px', borderRadius: '44px', background: 'rgba(236,235,232,.95)', color: C.oscuro, textAlign: 'center', boxShadow: '0 24px 60px rgba(0,0,0,.35)' });
+  const av3 = el('div', '', S.sent); css(av3, { display: 'flex', justifyContent: 'center', marginBottom: '22px' });
+  S.sentAv = [C.secundario, C.acento, C.corten].map((c, i) => { const d = el('div', 'av', av3); css(d, { width: '96px', height: '96px', background: c, marginLeft: i ? '-22px' : 0, boxShadow: '0 0 0 6px rgba(236,235,232,1)' }); return d; });
+  el('div', '', S.sent, `<div style="display:inline-flex;align-items:center;gap:14px;font:600 34px/1 ${B.fuentes.texto}"><span style="width:44px;height:44px;border-radius:50%;background:${C.secundario};color:${C.claro};padding:8px;display:inline-block">${ICON.check}</span>Enviado a 3 amigos</div>`);
+  // notificaciones
+  const nt = [['A 12 personas les gustó tu publicación'], ['Tu Reel se compartió 8 veces']];
+  S.notifs = nt.map(([t], i) => { const d = el('div', 'notif', sc, `<div class="app">${'<div style="width:40px">' + LOGO.logo_marca + '</div>'}</div><div><div class="t1">Instagram<span class="tag">Ejemplo</span><span style="float:right;font:400 20px/1.3 ${B.fuentes.texto};opacity:.6">ahora</span></div><div class="t2">${t}</div></div>`); css(d, { top: '80px' }); return d; });
+  // etiqueta de cristal fuera del teléfono
+  S.s2tag = el('div', 'abs glass', s2, `<div style="font:600 17px/1 ${B.fuentes.etiqueta};letter-spacing:.3em;color:${C.primario};text-transform:uppercase;margin-bottom:12px">Propuesta</div><div style="display:flex;align-items:center;gap:14px;font:500 40px/1 ${B.fuentes.titular};color:${C.oscuro}"><span style="width:38px;height:38px;color:${C.secundario}">${ICON.send}</span>Contenido que se comparte</div>`);
+  css(S.s2tag, { left: '70px', top: '160px', padding: '24px 34px', borderRadius: '36px', transformOrigin: '0 50%', zIndex: 5 });
+
+  // ================= ESCENA 3 · Montaje del lugar =================
+  const s3 = el('div', 'scene', stage); S.s3 = s3; s3.style.background = C.primario;
+  const shots = [
+    { src: 'hd_vertical_cielo', w: 1656, chip: 'Entreverde · Santa Elena', lines: ['Experiencias', 'para la gente', '<i style="color:' + C.acento + '">que quiere compartir.</i>'], size: 104, pan: [0.5, 0.5] },
+    { src: 'hd_aviso', w: 3926, chip: 'El lugar', lines: [B.destacada[0]], size: 128, pan: [0.48, 0.66] },
+    { src: 'hd_terraza', w: 1656, chip: 'La terraza', lines: [B.destacada[1]], size: 128, pan: [0.5, 0.5] },
+    { src: 'hd_banderas_noche', w: 2944, chip: 'Las noches', lines: [B.destacada[2]], size: 112, pan: [0.08, 0.72] },
+    { src: 'hd_angulo_cielo', w: 2944, chip: 'Al aire libre', lines: [B.destacada[3], '<i style="color:' + C.acento + '">' + B.destacada[4] + '</i>'], size: 104, pan: [0.30, 0.52] },
+  ];
+  S.shots = shots.map((s, i) => {
+    const d = el('div', 'shot', s3);
+    const im = el('img', 'ph', d); im.src = IMG + s.src + '.jpg';
+    el('div', 'scrim', d);
+    const chip = el('div', 'chip glass', d, s.chip);
+    const cnt = el('div', 'count', d, `0${i + 1}<span style="opacity:.55">/05</span>`);
+    const capd = el('div', 'cap', d); css(capd, { bottom: '330px' });
+    const ls = maskLines(capd, s.lines, 'tit', { fontSize: s.size + 'px' });
+    return { ...s, d, im, chip, cnt, ls };
+  });
+
+  // ================= ESCENA 4 · Una experiencia para compartir =================
+  const s4 = el('div', 'scene', stage); S.s4 = s4;
+  const bg4 = el('div', 'photo', s4); css(bg4, { inset: '-40px', backgroundImage: `url(${IMG}bg_terraza_blur.jpg)` }); S.bg4 = bg4;
+  const v4 = el('div', 'fill', s4); css(v4, { background: C.primario, opacity: .62 });
+  S.s4pat = patternLayer(s4, 'puntos', C.claro, '60px 60px', .12);
+  S.s4giant = el('div', 'giant', s4, 'COMPARTE'); css(S.s4giant, { fontSize: '330px', top: '60px', left: '-120px' });
+  S.polL = el('div', 'pola', s4, `<div class="im" style="background-image:url(${IMG}pol_barra.jpg)"></div><p>tú…</p>`);
+  S.polR = el('div', 'pola', s4, `<div class="im" style="background-image:url(${IMG}pol_noche.jpg)"></div><p>…y alguien más</p>`);
+  S.orbs = ['heart', 'send', 'comment'].map(k => { const d = el('div', 'orb glass', s4, ICON[k]); return d; });
+  const h4 = el('div', 'abs', s4); css(h4, { left: '70px', top: '1110px', width: '940px', textAlign: 'center', color: C.claro });
+  S.s4h = maskLines(h4, ['No es solo un producto.', 'Es una experiencia', `<span style="position:relative;color:${C.acento};font-style:italic">para <span style="position:relative">compartir.<svg viewBox="0 0 400 140" style="position:absolute;left:-34px;top:-14px;width:440px;height:150px;overflow:visible"><path id="oval" d="M30 80 C 20 30, 130 6, 230 10 C 340 14, 400 50, 380 92 C 360 132, 210 140, 120 128 C 50 118, 10 96, 40 60 C 56 42, 90 30, 120 26" fill="none" stroke="${C.acento}" stroke-width="5" stroke-linecap="round"/></svg></span></span>`], 'tit');
+  css(S.s4h[0], { fontSize: '64px', fontWeight: 400 });
+  css(S.s4h[1], { fontSize: '92px' });
+  css(S.s4h[2], { fontSize: '96px' });
+  S.oval = s4.querySelector('#oval');
+
+  // ================= ESCENA 5 · ¿Te animas? =================
+  const s5 = el('div', 'scene', stage); S.s5 = s5; s5.style.background = C.primario;
+  S.s5pat = patternLayer(s5, 'hojas', C.claro, '180px 180px', .09);
+  S.s5giant = el('div', 'giant', s5, 'COMPARTE'); css(S.s5giant, { fontSize: '330px', top: '1500px', left: '-80px', color: 'rgba(255,255,255,.13)' });
+  const q = el('div', 'abs tit', s5); css(q, { left: 0, top: '700px', width: '1080px', textAlign: 'center', fontSize: '188px', fontWeight: 500, color: C.claro, whiteSpace: 'nowrap' });
+  S.q = q;
+  const qm = el('div', 'mask', q); qm.style.paddingBottom = '20px';
+  S.qL = lettersOf(qm, '¿Te animas?');
+  const row = el('div', 'abs', s5); css(row, { left: 0, top: '1090px', width: '1080px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '40px' }); S.s5row = row;
+  const lg = el('div', 'logoc', row, LOGO.logo_marca); css(lg, { width: '150px', height: '150px', boxShadow: `0 0 0 8px ${C.claro}` }); css(lg.firstChild, { width: '62px' });
+  el('div', '', row, `<span style="font:300 64px/1 ${B.fuentes.titular};color:${C.claro}">×</span>`);
+  const ag = el('div', '', row, `<span style="font:600 18px/1.3 ${B.fuentes.etiqueta};letter-spacing:.18em;color:${C.primario};text-align:center;display:block">TU<br>LOGO</span>`);
+  css(ag, { width: '150px', height: '150px', borderRadius: '50%', background: C.claro, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: `0 0 0 8px ${C.claro},0 20px 60px rgba(42,45,35,.3)` });
+  S.s5c = el('div', 'abs label', s5, `${B.nombre} × ${B.agencia.nombre}<br><span style="color:${C.acento}">${B.agencia.contacto}</span>`);
+  css(S.s5c, { left: 0, top: '1330px', width: '1080px', textAlign: 'center', fontSize: '24px', lineHeight: '1.9', color: C.claro, letterSpacing: '.24em' });
+  S.s5heart = el('div', 'abs', s5, ICON.heartF); css(S.s5heart, { left: '505px', top: '1560px', width: '70px', height: '70px', color: C.acento });
+
+  el('div', '', stage).id = 'vignette';
+
+  // espera a que carguen fuentes e imágenes
+  await document.fonts.ready;
+  await Promise.all([...document.images].map(i => i.decode().catch(() => {})));
+  await Promise.all([...document.querySelectorAll('[style*="background-image"]')].map(e => {
+    const m = /url\("?([^")]+)"?\)/.exec(e.style.backgroundImage); if (!m || m[1].startsWith('data:')) return;
+    const i = new Image(); i.src = m[1]; return i.decode().catch(() => {});
+  }));
+}
+
+// ---------------------------------------------------------- tiempos
+const T = {
+  s1: [0, 4.75], s2: [3.95, 15.6], s3: [15.1, 25.7], s4: [25.35, 29.7], s5: [29.3, 33.5],
+  dur: 33.5,
+};
+
+function placePhoto(im, natW, zoom, panX, natH = 2208) {
+  // foto a altura completa (1920 × zoom), desplazada horizontalmente según panX (0..1)
+  const h = 1920 * zoom, w = natW / natH * h;
+  const x = -(w - 1080) * panX, y = -(h - 1920) / 2;
+  css(im, { width: w + 'px', height: h + 'px', transform: `translate3d(${x}px,${y}px,0)` });
+}
+
+function render(t) {
+  // ===================== ESCENA 1 =====================
+  const on1 = t < T.s1[1]; show(S.s1, on1);
+  if (on1) {
+    S.s1pat.style.transform = `translate3d(${-t * 14}px,${-t * 22}px,0)`;
+    S.s1giant.style.transform = `translateX(${-t * 30}px)`;
+    const lb = eo(P(t, .05, .6)); css(S.s1label, { opacity: lb, transform: `translateY(${(1 - lb) * 24}px)` });
+    const pa = eo(P(t, .1, .85)); css(S.s1panel, { opacity: pa, transform: `translateY(${(1 - pa) * 160}px) scale(${.94 + .06 * pa})` });
+    const lo = P(t, .35, 1.15); css(S.s1logo, { opacity: P(t, .35, .55), transform: `scale(${lerp(.6, 1, back(lo))}) rotate(${lerp(-10, 0, eo(lo))}deg)` });
+    S.s1secPal.style.opacity = eo(P(t, .9, 1.2));
+    S.s1sw.forEach(([d, l], i) => { const k = P(t, 1.0 + i * .13, 1.45 + i * .13); css(d, { opacity: clamp(k * 3), transform: `translateY(${(1 - eo(k)) * 40}px) scale(${lerp(.6, 1, back(k))})` }); l.style.opacity = eo(P(t, 1.2 + i * .13, 1.5 + i * .13)); });
+    S.s1secTip.style.opacity = eo(P(t, 1.7, 2.0));
+    const tp = eo(P(t, 1.8, 2.3)); css(S.s1tip, { opacity: tp, transform: `translateX(${(1 - tp) * -40}px)` });
+    S.s1progT.style.opacity = eo(P(t, .9, 1.2));
+    S.s1prog.style.transform = `scaleX(${eio(P(t, 1.0, 3.2))})`;
+    S.s1progT.textContent = t < 3.2 ? 'Preparando tus redes…' : 'Listo ✓';
+    S.s1h.forEach((s, i) => { const k = eo(P(t, 2.25 + i * .15, 2.95 + i * .15)); s.style.transform = `translateY(${(1 - k) * 110}%)`; });
+    // flotación suave del panel
+    if (t > .85) S.s1panel.style.transform = `translateY(${sin(t * 1.6) * 6}px)`;
+  }
+
+  // ===================== ESCENA 2 =====================
+  const on2 = t >= T.s2[0] && t < T.s2[1]; show(S.s2, on2);
+  if (on2) {
+    // barrido circular desde el logo
+    const r = eio(P(t, 3.95, 4.75)) * 2300;
+    S.s2.style.clipPath = t < 4.75 ? `circle(${r}px at 540px 750px)` : 'none';
+    S.s2pat.style.transform = `translate3d(${-(t - 4) * 18}px,${-(t - 4) * 10}px,0)`;
+    S.s2giant.style.transform = `translateX(${-(t - 4) * 34}px)`;
+    S.s2giant2.style.transform = `translateX(${(t - 4) * 30}px)`;
+    // entrada del teléfono
+    const pe = eo(P(t, 4.35, 5.45));
+    let pT = `translateY(${(1 - pe) * 1100}px) rotateX(${(1 - pe) * 24}deg) rotateZ(${(1 - pe) * -4}deg)`;
+    // salida: zoom hacia la pantalla
+    const z = eio(P(t, 14.75, 15.55));
+    const sc = lerp(1, 1.75, z);
+    pT += ` translateY(${z * -47}px) scale(${sc})`;
+    pT += ` translateY(${sin(t * 1.3) * 6 * (1 - z)}px)`;
+    S.phone.style.transform = pT;
+    // cuadrícula en cascada
+    S.posts.forEach((p, i) => { const k = P(t, 5.35 + i * .12, 5.75 + i * .12); css(p, { opacity: eo(k), transform: `scale(${lerp(.86, 1, back(k))})` }); });
+    S.avatar.style.transform = `scale(${lerp(.7, 1, back(P(t, 5.0, 5.6)))})`;
+    // desplazamiento del perfil
+    const sy = eio(P(t, 6.9, 8.3)) * -470;
+    S.profile.style.transform = `translateY(${sy}px)`;
+    // apertura del Reel desde la publicación 4 (fila 2, col 1)
+    const ro = eio(P(t, 8.75, 9.3));
+    const cx = 0, cy = 926 + 325 + sy, cw = 242, ch = 322;
+    css(S.reel, { left: lerp(cx, 0, ro) + 'px', top: lerp(cy, 0, ro) + 'px', width: lerp(cw, 732, ro) + 'px', height: lerp(ch, 1532, ro) + 'px', opacity: t < 8.75 ? 0 : 1, borderRadius: lerp(0, 0, ro) + 'px' });
+    // la foto del reel cubre el contenedor, con zoom lento
+    const rcw = lerp(cw, 732, ro), rch = lerp(ch, 1532, ro), AR = 2944 / 2208;
+    const rz = lerp(1.15, 1.03, P(t, 8.8, 15.5));
+    const ih = Math.max(rch, rcw / AR) * rz, iw = ih * AR;
+    css(S.reelImg, { width: iw + 'px', height: ih + 'px', transform: `translate3d(${-(iw - rcw) * .24}px,${-(ih - rch) * .35}px,0)` });
+    S.reelUI.style.opacity = eo(P(t, 9.2, 9.6));
+    // doble toque: corazón grande
+    const bh = P(t, 9.55, 10.35);
+    css(S.bigHeart, { opacity: bh > 0 && bh < 1 ? (bh < .7 ? 1 : 1 - (bh - .7) / .3) : 0, transform: `scale(${bh < .35 ? back(bh / .35) : 1 + (bh - .35) * .25})` });
+    S.rIcons.heart.style.color = t > 9.6 ? '#ff5a6e' : '#fff';
+    S.rIcons.heart.innerHTML = t > 9.6 ? ICON.heartF : ICON.heart;
+    // corazones que suben
+    S.hearts.forEach((h, i) => {
+      const t0 = 9.7 + i * .2, k = P(t, t0, t0 + 1.9);
+      const on = k > 0 && k < 1;
+      css(h, { opacity: on ? (k < .15 ? k / .15 : 1 - Math.pow((k - .15) / .85, 2)) : 0, transform: `translate(${sin(k * 5 + i) * 34 - k * 40}px,${-k * 760}px) scale(${.6 + k * .6}) rotate(${sin(i) * 18}deg)` });
+    });
+    // comentarios
+    S.bubbles.forEach((b, i) => { const k = P(t, 10.2 + i * .3, 10.65 + i * .3); const out = P(t, 13.9, 14.3); css(b, { opacity: eo(k) * (1 - out), transform: `translateX(${(1 - eo(k)) * -80}px) scale(${lerp(.85, 1, back(k))})` }); });
+    // enviar
+    const sp = P(t, 11.55, 11.95);
+    S.rIcons.send.style.transform = `scale(${sp > 0 && sp < 1 ? 1 - sin(sp * PI) * .28 + (sp > .5 ? sin((sp - .5) * 2 * PI) * .12 : 0) : 1})`;
+    S.rIcons.send.style.color = t > 11.7 && t < 13.6 ? C.acento : '#fff';
+    const se = P(t, 11.85, 12.35), sx = P(t, 13.35, 13.7);
+    css(S.sent, { opacity: eo(se) * (1 - sx), transform: `translateY(${(1 - eo(se)) * 60 + sx * -30}px) scale(${lerp(.8, 1, back(se))})` });
+    S.sentAv.forEach((a, i) => { const k = P(t, 12.0 + i * .12, 12.35 + i * .12); a.style.transform = `scale(${back(k)})`; });
+    // notificaciones
+    S.notifs.forEach((n, i) => {
+      const k = eo(P(t, 12.55 + i * .7, 12.95 + i * .7)), out = eio(P(t, 14.3, 14.7));
+      const y = 80 + (i === 0 ? eo(P(t, 13.25, 13.6)) * 150 : 0);
+      css(n, { top: y + 'px', opacity: k * (1 - out), transform: `translateY(${(1 - k) * -180}px)` });
+    });
+    // etiqueta de cristal
+    const tg = P(t, 7.0, 7.6), tgo = P(t, 14.5, 14.85);
+    css(S.s2tag, { opacity: eo(tg) * (1 - tgo), transform: `translateX(${(1 - eo(tg)) * -60}px) rotate(-3deg) scale(${lerp(.85, 1, back(tg))}) translateY(${sin(t * 1.7) * 6}px)` });
+    // fundido con desenfoque hacia la escena 3
+    const fo = P(t, 15.15, 15.6);
+    css(S.s2, { opacity: 1 - fo, filter: fo > 0 ? `blur(${fo * 14}px)` : 'none' });
+  } else { S.s2.style.filter = 'none'; }
+
+  // ===================== ESCENA 3 =====================
+  const on3 = t >= T.s3[0] && t < T.s3[1]; show(S.s3, on3);
+  if (on3) {
+    const starts = [15.1, 17.45, 19.6, 21.75, 23.75], ends = [17.8, 19.95, 22.1, 24.1, 25.7];
+    S.shots.forEach((s, i) => {
+      const a = starts[i], b = ends[i];
+      const vis = t >= a && t < b; s.d.style.display = vis ? 'block' : 'none';
+      if (!vis) return;
+      const k = P(t, a, b);
+      const fin = i === 0 ? 1 : eo(P(t, a, a + .4));
+      const fout = i === 4 ? 1 - P(t, 25.35, 25.7) : 1;
+      css(s.d, { opacity: fin * fout, filter: fin < 1 ? `blur(${(1 - fin) * 12}px)` : 'none', zIndex: i });
+      placePhoto(s.im, s.w, lerp(1.15, 1.03, k), lerp(s.pan[0], s.pan[1], eio(k)));
+      const ck = eo(P(t, a + .25, a + .7));
+      css(s.chip, { opacity: ck, transform: `translateY(${(1 - ck) * -20}px) scale(${lerp(.9, 1, back(P(t, a + .25, a + .7)))})` });
+      s.cnt.style.opacity = ck;
+      s.ls.forEach((l, j) => { const lk = eo(P(t, a + .35 + j * .15, a + 1.0 + j * .15)); l.style.transform = `translateY(${(1 - lk) * 112}%)`; });
+    });
+  }
+
+  // ===================== ESCENA 4 =====================
+  const on4 = t >= T.s4[0] && t < T.s4[1]; show(S.s4, on4);
+  if (on4) {
+    const fi = eo(P(t, 25.35, 25.75)), fo = P(t, 29.3, 29.7);
+    css(S.s4, { opacity: fi, filter: fi < 1 ? `blur(${(1 - fi) * 10}px)` : 'none' });
+    S.bg4.style.transform = `scale(${lerp(1.15, 1.03, P(t, 25.3, 29.7))})`;
+    S.s4pat.style.transform = `translate3d(${-(t - 25) * 12}px,${-(t - 25) * 18}px,0)`;
+    S.s4giant.style.transform = `translateX(${-(t - 25) * 34}px)`;
+    const j = eo(P(t, 25.55, 26.65));
+    const fl = sin(t * 1.5) * 6;
+    css(S.polL, { left: lerp(-480, 132, j) + 'px', top: (440 + fl) + 'px', transform: `rotate(${lerp(-18, -6, j)}deg)` });
+    css(S.polR, { left: lerp(1140, 528, j) + 'px', top: (470 - fl) + 'px', transform: `rotate(${lerp(16, 5, j)}deg)` });
+    S.orbs.forEach((o, i) => {
+      const a = (t - 25) * .55 + i * 2.1;
+      const k = eo(P(t, 26.4 + i * .15, 26.9 + i * .15));
+      css(o, { left: (540 - 48 + Math.cos(a) * 460) + 'px', top: (690 - 48 + sin(a) * 330) + 'px', opacity: k, transform: `scale(${lerp(.5, 1, back(P(t, 26.4 + i * .15, 26.9 + i * .15)))})` });
+    });
+    S.s4h.forEach((s, i) => { const k = eo(P(t, 26.75 + i * .16, 27.4 + i * .16)); s.style.transform = `translateY(${(1 - k) * 112}%)`; });
+    const ov = eo(P(t, 27.6, 28.3));
+    S.oval.style.strokeDasharray = '1200'; S.oval.style.strokeDashoffset = 1200 * (1 - ov);
+    if (fo > 0) { css(S.s4, { opacity: fi * (1 - fo) }); }
+  }
+
+  // ===================== ESCENA 5 =====================
+  const on5 = t >= T.s5[0]; show(S.s5, on5);
+  if (on5) {
+    const r = eio(P(t, 29.3, 30.05)) * 1250;
+    S.s5.style.clipPath = t < 30.05 ? `circle(${r}px at 540px 960px)` : 'none';
+    S.s5pat.style.transform = `translate3d(${-(t - 29) * 14}px,${-(t - 29) * 22}px,0)`;
+    S.s5giant.style.transform = `translateX(${-(t - 29) * 30}px)`;
+    S.qL.forEach((s, i) => { const k = eo(P(t, 29.85 + i * .055, 30.45 + i * .055)); s.style.transform = `translateY(${(1 - k) * 105}%)`; });
+    const br = 1 + .02 * (0.5 - 0.5 * Math.cos(Math.max(0, t - 30.9) * 1.6));
+    S.q.style.transform = `scale(${br})`;
+    const rk = P(t, 30.9, 31.5); css(S.s5row, { opacity: eo(rk), transform: `translateY(${(1 - eo(rk)) * 30}px)` });
+    const ck = P(t, 31.2, 31.8); css(S.s5c, { opacity: eo(ck), transform: `translateY(${(1 - eo(ck)) * 20}px)` });
+    const hk = P(t, 31.9, 33.4);
+    css(S.s5heart, { opacity: hk > 0 ? (hk < .15 ? hk / .15 : 1 - Math.pow((hk - .15) / .85, 1.6)) : 0, transform: `translate(${sin(hk * 6) * 22}px,${-hk * 300}px) scale(${.7 + hk * .4})` });
+  }
+}
+
+window.DURATION = T.dur;
+window.render = render;
+window.ready = build().then(() => { render(0); return true; });
+})();
+</script>
+</body>
+</html>
