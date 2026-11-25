@@ -141,7 +141,6 @@ def med(px, mask=None):
     return to_hex(np.median(px if mask is None else px[mask], axis=0))
 
 
-ig = np.asarray(Image.open(RAW / "perfil_instagram.jpg").convert("RGB")).astype(int)
 madera = region("hd_frente", (0.30, 0.68, 0.70, 0.85))
 cont = region("hd_frente", (0.22, 0.52, 0.64, 0.68))
 cont_s = cont.sum(1)
@@ -151,7 +150,6 @@ monst = region("hd_frente", (0.15, 0.72, 0.85, 0.92))
 palette = {
     "pdf_fondos_artboards_1_a_4": page_bgs,
     "pdf_tinta_logo": logo_ink,
-    "ig_foto_perfil": med(ig[300:340, 90:130].reshape(-1, 3)),
     "madera_sillas": med(madera, (madera[:, 0] > 140) & (madera[:, 0] > madera[:, 1] + 15) & (madera[:, 1] > madera[:, 2] + 15)),
     "contenedor_sombra": med(cont, (cont_s > np.percentile(cont_s, 15)) & (cont_s <= np.percentile(cont_s, 35))),
     "aviso_corten": med(corten, corten[:, 0] > corten[:, 2] + 25),

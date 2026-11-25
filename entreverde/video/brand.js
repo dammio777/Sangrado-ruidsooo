@@ -14,7 +14,7 @@ window.BRAND = {
   // Paleta medida (ver assets/palette_medida.json)
   color: {
     primario: "#44493A",   // Oliva profundo: fondo del artboard 1 del logo
-    secundario: "#758457", // Verde Entreverde: artboard 3 y foto de perfil de Instagram (#748457)
+    secundario: "#758457", // Verde Entreverde: artboard 3 del PDF del logo
     acento: "#DBB485",     // Madera: las sillas de la barra (foto)
     claro: "#ECEBE8",      // Crema: tinta del logo
     oscuro: "#2A2D23",     // Carbón oliva: el oliva del logo llevado a sombra (como el contenedor negro)
