@@ -175,8 +175,6 @@ export function BuenVivir() {
         </div>
 
         <div className="ig" data-reveal="up">
-          <span className="screw screw--tl" aria-hidden="true" />
-          <span className="screw screw--tr" aria-hidden="true" />
           <div className="ig__main">
             <h3 className="heading ig__title">{copy.buenVivir.igHeading}</h3>
             <a className="ig__handle mono" href={person.instagram.url} target="_blank" rel="noopener">

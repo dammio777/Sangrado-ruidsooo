@@ -63,7 +63,7 @@ export function Hero() {
 
         <div className="hero__media">
           <div ref={recordWrap} className="hero__record" data-hero-record>
-            <Record ref={rec} ring="CRISTIAN CALLE · HI-FI · LADO A · 33⅓ RPM · CC-001 · " />
+            <Record ref={rec} />
           </div>
           <div className="hero__portrait" data-reveal="circle" data-reveal-group="hero" data-delay="0.15">
             <SiteImg image={images.retrato} round priority />

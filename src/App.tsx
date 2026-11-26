@@ -77,7 +77,6 @@ export function App() {
       <Floating />
       <Toast />
       <Intro />
-      <div className="grain" aria-hidden="true" />
       {dev && (
         <Suspense fallback={null}>
           <Overlays demo={dev.demo} pending={dev.pending} />

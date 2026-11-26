@@ -58,7 +58,6 @@
   --z-float: 60;
   --z-modal: 90;
   --z-toast: 95;
-  --z-grain: 100;
   --z-intro: 110;
 
   --ok: #9bc59d;
@@ -70,10 +69,10 @@
   --surface-raised: var(--c-brand-deep);
   --text: var(--c-light);
   --text-muted: var(--c-brand-soft);
-  --text-accent: var(--c-accent);
-  --action-bg: var(--c-accent);
-  --action-text: var(--c-brand-deep);
-  --line: color-mix(in oklch, var(--c-accent) 45%, transparent);
+  --text-accent: var(--c-brand-soft);
+  --action-bg: var(--c-light);
+  --action-text: var(--c-brand);
+  --line: color-mix(in oklch, var(--c-light) 16%, transparent);
   --focus-ring: var(--c-accent);
   --ok: #9bc59d;
   --danger: #f2a08f;
@@ -83,10 +82,10 @@
   --surface-raised: var(--c-dark-2);
   --text: var(--c-light);
   --text-muted: var(--c-brand-soft);
-  --text-accent: var(--c-accent);
-  --action-bg: var(--c-accent);
-  --action-text: var(--c-dark);
-  --line: color-mix(in oklch, var(--c-accent) 45%, transparent);
+  --text-accent: var(--c-brand-soft);
+  --action-bg: var(--c-light);
+  --action-text: var(--c-brand);
+  --line: color-mix(in oklch, var(--c-light) 16%, transparent);
   --focus-ring: var(--c-accent);
   --ok: #9bc59d;
   --danger: #f2a08f;

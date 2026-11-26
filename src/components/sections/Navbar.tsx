@@ -1,7 +1,7 @@
 import { useEffect, useRef, type MouseEvent } from "react";
 import { m } from "motion/react";
 import { gsap, ScrollTrigger } from "../../lib/gsap";
-import { copy, nav, person } from "../../config/site";
+import { copy, nav, person, site } from "../../config/site";
 import { useUI } from "../../lib/store";
 import { scrollToId } from "../../lib/scroll";
 import { addTick } from "../../lib/ticker";
@@ -59,7 +59,7 @@ export function Navbar() {
           const s = sec.dataset.navSurface === "light" ? "light" : "brand";
           ui.setNavSurface(s);
           document.documentElement.dataset.mood = s;
-          meta?.setAttribute("content", s === "light" ? "#F2E6D0" : "#5C1A24");
+          meta?.setAttribute("content", s === "light" ? site.themeLight : site.themeBrand);
         },
       }),
     );

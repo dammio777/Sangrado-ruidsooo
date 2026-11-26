@@ -154,8 +154,6 @@ export function Contact() {
         </header>
 
         <div className="contact__panel" data-reveal="up" data-delay="0.1">
-          <span className="screw screw--tl" aria-hidden="true" />
-          <span className="screw screw--tr" aria-hidden="true" />
           {state !== "sent" ? (
             <form className="form" noValidate onSubmit={submit} aria-describedby={id("status")}>
               <div className="form__row">

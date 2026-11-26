@@ -9,5 +9,9 @@ let el: HTMLElement | null = null;
 export function setMood(key: keyof typeof parts, v: number) {
   parts[key] = Math.min(1, Math.max(0, v));
   el ??= document.querySelector<HTMLElement>(".mood--light");
-  if (el) el.style.opacity = (parts.flip * (1 - parts.contact)).toFixed(3);
+  const o = parts.flip * (1 - parts.contact);
+  if (el) el.style.opacity = o.toFixed(3);
+  // fondo real (para elementos fijos como la píldora flotante)
+  const bg = o > 0.5 ? "light" : "brand";
+  if (document.documentElement.dataset.bg !== bg) document.documentElement.dataset.bg = bg;
 }

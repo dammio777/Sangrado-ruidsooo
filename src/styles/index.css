@@ -68,8 +68,8 @@ body {
   }
 }
 ::selection {
-  background: var(--c-accent);
-  color: var(--c-brand-deep);
+  background: var(--c-light);
+  color: var(--c-brand);
 }
 :focus-visible {
   outline: 2px solid var(--focus-ring, var(--c-accent));
@@ -117,8 +117,8 @@ p {
   z-index: calc(var(--z-intro) + 2);
   padding: 12px 18px;
   border-radius: var(--r-button);
-  background: var(--c-accent);
-  color: var(--c-brand-deep);
+  background: var(--c-light);
+  color: var(--c-brand);
   font-weight: 600;
   text-decoration: none;
   transform: translateY(-160%);
@@ -218,24 +218,6 @@ p {
   background: var(--c-light);
   opacity: 0;
 }
-.grain {
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-grain);
-  pointer-events: none;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-@media (min-width: 1024px) and (pointer: fine) {
-  .grain {
-    mix-blend-mode: overlay;
-  }
-  html[data-mood="light"] .grain {
-    mix-blend-mode: multiply;
-    opacity: 0.06;
-  }
-}
-
 /* superficies: sin JS-motion, cada sección pinta su fondo; con JS el mood las cruza */
 .hero,
 .services,
@@ -389,24 +371,6 @@ p {
   opacity: 0.35;
   cursor: default;
 }
-.screw {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--c-accent);
-  opacity: 0.7;
-  box-shadow: inset -1px -1px 0 rgb(28 10 13 / 0.35);
-}
-.screw--tl {
-  top: 14px;
-  left: 14px;
-}
-.screw--tr {
-  top: 14px;
-  right: 14px;
-}
-
 /* ───────────── Disco, brazo, medidores ───────────── */
 .record {
   position: relative;
@@ -440,8 +404,8 @@ p {
 }
 .record__label-ring {
   fill: none;
-  stroke: var(--c-accent);
-  stroke-opacity: 0.5;
+  stroke: var(--c-light);
+  stroke-opacity: 0.3;
   stroke-width: 0.8;
 }
 .record__ring-text {
@@ -625,7 +589,7 @@ p {
 }
 .nav[data-menu="open"] {
   --text: var(--c-light);
-  --text-accent: var(--c-accent);
+  --text-accent: var(--c-brand-soft);
   transform: none;
 }
 .nav__bg {
@@ -635,13 +599,30 @@ p {
   transition: opacity var(--d-base) var(--ease-in-out), transform var(--d-base) var(--ease-out);
 }
 .nav__bg--brand {
-  background: color-mix(in oklch, var(--c-brand) 88%, transparent);
-  border-bottom: 1px solid color-mix(in oklch, var(--c-accent) 45%, transparent);
+  background: var(--c-brand);
+  border-bottom: 1px solid color-mix(in oklch, var(--c-light) 16%, transparent);
 }
 .nav__bg--light {
-  background: color-mix(in oklch, var(--c-light) 92%, transparent);
+  background: var(--c-light);
   border-bottom: 1px solid color-mix(in oklch, var(--c-brand) 25%, transparent);
   opacity: 0;
+}
+/* único elemento con backdrop-filter; sin soporte queda el fondo sólido */
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nav {
+    -webkit-backdrop-filter: saturate(1.3) blur(16px);
+    backdrop-filter: saturate(1.3) blur(16px);
+  }
+  .nav[data-menu="open"] {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .nav__bg--brand {
+    background: color-mix(in oklch, var(--c-brand) 78%, transparent);
+  }
+  .nav__bg--light {
+    background: color-mix(in oklch, var(--c-light) 82%, transparent);
+  }
 }
 .nav[data-surface="light"] .nav__bg--light {
   opacity: 1;
@@ -1128,8 +1109,8 @@ p {
 }
 .manifesto__signal path {
   fill: none;
-  stroke: var(--c-accent);
-  stroke-opacity: 0.22;
+  stroke: var(--c-light);
+  stroke-opacity: 0.28;
   stroke-width: 1.5;
   vector-effect: non-scaling-stroke;
 }
@@ -1225,7 +1206,7 @@ p {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--c-accent);
+  background: var(--text-muted);
 }
 .tracklist {
   grid-column: 6 / span 7;
@@ -1341,7 +1322,7 @@ p {
 .detail__list li {
   position: relative;
   padding: 0.6rem 0 0.6rem 1.5rem;
-  border-bottom: 1px solid color-mix(in oklch, var(--c-accent) 20%, transparent);
+  border-bottom: 1px solid var(--line);
 }
 .detail__list li::before {
   content: "";
@@ -1350,7 +1331,7 @@ p {
   top: 1.2rem;
   width: 8px;
   height: 1px;
-  background: var(--c-accent);
+  background: var(--text-muted);
 }
 .detail__cta {
   margin-top: 2rem;
@@ -1616,7 +1597,7 @@ p {
 }
 .flip__sun {
   border-radius: 50%;
-  background: radial-gradient(circle at 50% 42%, color-mix(in oklch, var(--c-accent) 50%, var(--c-light)) 0%, var(--c-accent) 70%);
+  background: radial-gradient(circle at 50% 42%, var(--c-light) 0%, color-mix(in oklch, var(--c-accent) 38%, var(--c-light-2)) 72%);
   opacity: 0;
   transform: scale(0.37);
 }
@@ -1632,7 +1613,7 @@ p {
 }
 .flip__line path {
   fill: none;
-  stroke: var(--c-accent);
+  stroke: color-mix(in oklch, var(--c-brand) 45%, var(--c-light));
   stroke-width: 1.5;
   vector-effect: non-scaling-stroke;
 }
@@ -1695,12 +1676,7 @@ html:not(.js-motion) .flip__static-label {
   aspect-ratio: 1;
   translate: -50% 0;
   border-radius: 50%;
-  background: radial-gradient(
-    circle at 50% 42%,
-    color-mix(in oklch, var(--c-accent) 55%, var(--c-light)) 0%,
-    var(--c-accent) 58%,
-    color-mix(in oklch, var(--c-accent) 78%, var(--c-accent-2)) 100%
-  );
+  background: radial-gradient(circle at 50% 42%, var(--c-light) 0%, color-mix(in oklch, var(--c-accent) 38%, var(--c-light-2)) 72%);
 }
 .bv__title {
   margin: 1.25rem 0 0;
@@ -1838,10 +1814,6 @@ html:not(.js-motion) .flip__static-label {
   padding: clamp(2rem, 5vw, 4rem);
   border-radius: var(--r-panel);
   background: var(--c-light-2);
-}
-.ig .screw {
-  background: var(--c-brand);
-  opacity: 0.5;
 }
 .ig__main {
   grid-area: main;
@@ -2008,7 +1980,8 @@ html:not(.js-motion) .flip__static-label {
   text-decoration: none;
 }
 a.direct__link:hover {
-  color: var(--c-accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 .direct__link.is-pending {
   color: var(--text-muted);
@@ -2152,8 +2125,8 @@ a.direct__link:hover {
   background: color-mix(in oklch, var(--c-light) 8%, transparent);
 }
 .chip input:checked + span {
-  background: var(--c-accent);
-  color: var(--c-brand-deep);
+  background: var(--c-light);
+  color: var(--c-brand);
   box-shadow: none;
 }
 .chip input:focus-visible + span {
@@ -2182,7 +2155,7 @@ a.direct__link:hover {
 }
 .sent__wave path {
   fill: none;
-  stroke: var(--c-accent);
+  stroke: var(--c-light);
   stroke-width: 1.5;
   vector-effect: non-scaling-stroke;
 }
@@ -2277,7 +2250,7 @@ a.direct__link:hover {
 }
 .footer__wave path {
   fill: none;
-  stroke: var(--c-accent);
+  stroke: color-mix(in oklch, var(--c-light) 60%, transparent);
   stroke-width: 1.5;
   vector-effect: non-scaling-stroke;
 }
@@ -2323,7 +2296,8 @@ a.direct__link:hover {
 }
 .footer__link:hover,
 .footer__nav a:hover {
-  color: var(--c-accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 .footer__base {
   display: flex;
@@ -2354,8 +2328,8 @@ a.direct__link:hover {
   min-height: 48px;
   padding: 0 20px 0 16px;
   border-radius: var(--r-button);
-  background: var(--c-accent);
-  color: var(--c-brand-deep);
+  background: var(--c-light);
+  color: var(--c-brand);
   font-weight: 600;
   font-size: 15px;
   text-decoration: none;
@@ -2363,12 +2337,16 @@ a.direct__link:hover {
   opacity: 0;
   visibility: hidden;
   transform: translateY(16px);
-  transition: opacity var(--d-base) var(--ease-out), transform var(--d-base) var(--ease-out), visibility 0s linear var(--d-base);
+  transition: opacity var(--d-base) var(--ease-out), transform var(--d-base) var(--ease-out), visibility 0s linear var(--d-base), background-color var(--d-base), color var(--d-base);
 }
 html:has(.menu.is-open) .floating,
 html:has(.sheet) .floating {
   opacity: 0 !important;
   visibility: hidden !important;
+}
+html[data-bg="light"] .floating {
+  background: var(--c-brand);
+  color: var(--c-light);
 }
 .floating.is-visible {
   opacity: 1;

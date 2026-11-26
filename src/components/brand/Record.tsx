@@ -34,7 +34,7 @@ const miniGrooves = grooves(6);
 
 /** Disco: surcos concéntricos + label central. El brillo (sheen) va aparte y NO gira. */
 export const Record = forwardRef<HTMLDivElement, RecordProps>(function Record(
-  { ring = "CRISTIAN CALLE · HI-FI · LADO A · 33⅓ RPM · ", center = "CC", variant = "full", className = "", sheen = true, labelClass = "", grooveCount },
+  { ring = null, center = "CC", variant = "full", className = "", sheen = true, labelClass = "", grooveCount },
   ref,
 ) {
   const uid = useId().replace(/[:«»]/g, "");

@@ -89,7 +89,7 @@ export function Services() {
           <div className="services__deck" aria-hidden="true">
             <div className="services__sticky">
               <div ref={recWrap} className="services__record">
-                <Record ring="LADO A · LO QUE HACE · CINCO TEMAS · HI-FI · " center="A1" sheen={false} grooveCount={22} />
+                <Record center="A1" sheen={false} grooveCount={22} />
               </div>
               <p className="mono services__now">
                 <span className="services__now-dot" /> {services[active]!.id} · {services[active]!.title.toUpperCase()}
