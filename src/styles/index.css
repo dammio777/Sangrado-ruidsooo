@@ -241,6 +241,33 @@ p {
   background: transparent;
 }
 
+/* Bloques bajo el pliegue sin animación ligada al scroll: se renderizan al acercarse */
+.pillars,
+.ig,
+.footer__grid {
+  content-visibility: auto;
+}
+.pillars {
+  contain-intrinsic-size: auto 300px;
+}
+.ig {
+  contain-intrinsic-size: auto 380px;
+}
+.footer__grid {
+  contain-intrinsic-size: auto 150px;
+}
+@media (max-width: 1023px) {
+  .pillars {
+    contain-intrinsic-size: auto 720px;
+  }
+  .ig {
+    contain-intrinsic-size: auto 560px;
+  }
+  .footer__grid {
+    contain-intrinsic-size: auto 260px;
+  }
+}
+
 /* ───────────── Entradas (estados iniciales solo con js-motion) ───────────── */
 .js-motion [data-reveal="up"] {
   opacity: 0;
@@ -712,13 +739,21 @@ p {
 .nav__links a[aria-current] {
   opacity: 1;
 }
-.nav__active {
+/* indicador de sección activa (CSS, sin JS de animación) */
+.nav__links a::after {
+  content: "";
   position: absolute;
   left: 0.8rem;
   right: 0.8rem;
   bottom: 8px;
   height: 1px;
-  background: var(--text-accent);
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: 50% 50%;
+  transition: transform var(--d-base) var(--ease-out);
+}
+.nav__links a[aria-current]::after {
+  transform: scaleX(1);
 }
 .nav__right {
   display: flex;

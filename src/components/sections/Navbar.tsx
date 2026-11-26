@@ -1,5 +1,4 @@
 import { useEffect, useRef, type MouseEvent } from "react";
-import { m } from "motion/react";
 import { gsap, ScrollTrigger } from "../../lib/gsap";
 import { copy, nav, person, site } from "../../config/site";
 import { useUI } from "../../lib/store";
@@ -9,7 +8,6 @@ import { createSpin } from "../../lib/spin";
 import { live } from "../../lib/live";
 import { motionOK } from "../../lib/env";
 import { useFocusTrap, useScrollLock } from "../../lib/a11y";
-import { spring } from "../../lib/motion";
 import { waHref } from "../../lib/whatsapp";
 import { Record } from "../brand/Record";
 import { SoundToggle } from "../ui/SoundToggle";
@@ -122,7 +120,6 @@ export function Navbar() {
                 <li key={n.id}>
                   <a href={`#${n.id}`} onClick={go(n.id)} aria-current={active === n.id ? "location" : undefined}>
                     {n.label}
-                    {active === n.id && <m.span layoutId="nav-active" className="nav__active" transition={spring.ui} />}
                   </a>
                 </li>
               ))}

@@ -32,20 +32,6 @@ export function startTicker() {
   });
 }
 
-/** Limita un callback a N fps dentro del reloj único. */
-export function fpsGate(fps: number) {
-  const step = 1 / fps;
-  let acc = step;
-  return (dt: number) => {
-    acc += dt;
-    if (acc >= step) {
-      acc = acc % step;
-      return true;
-    }
-    return false;
-  };
-}
-
 /** Bandera de visibilidad (IntersectionObserver) para pausar fuera de pantalla. */
 export function watchVisible(
   el: Element,

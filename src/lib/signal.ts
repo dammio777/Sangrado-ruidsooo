@@ -1,4 +1,4 @@
-/** Señal procedimental compartida: suma de 3 senos + ruido suavizado. */
+/** Paths de onda generados (seno, ruido, cresta) para las hairlines SVG. */
 
 function hash(n: number) {
   const s = Math.sin(n * 127.1) * 43758.5453123;
@@ -10,20 +10,6 @@ export function noise1(x: number) {
   const f = x - i;
   const u = f * f * (3 - 2 * f);
   return (hash(i) * (1 - u) + hash(i + 1) * u) * 2 - 1;
-}
-
-/** valor de la señal en x (0..1 a lo ancho) y tiempo t (s), salida aprox -1..1 */
-export function signalAt(x: number, t: number, noiseAmt = 0.35) {
-  const a = Math.sin(x * Math.PI * 2 * 2.0 + t * 1.6) * 0.55;
-  const b = Math.sin(x * Math.PI * 2 * 5.3 - t * 2.3) * 0.22;
-  const c = Math.sin(x * Math.PI * 2 * 11.7 + t * 3.7) * 0.1;
-  const n = noise1(x * 24 + t * 2.2) * noiseAmt;
-  return a + b + c + n;
-}
-
-/** nivel procedimental 0..1 (VU / eq-bars cuando el sonido está OFF) */
-export function levelAt(t: number, seed = 0) {
-  return 0.5 + 0.5 * noise1(t * 1.7 + seed * 13.37) * 0.8 + 0.1 * Math.sin(t * 5 + seed);
 }
 
 const f = (n: number) => Math.round(n * 100) / 100;

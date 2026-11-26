@@ -128,4 +128,15 @@ export function refreshAfterFonts() {
   const refresh = () => ScrollTrigger.refresh();
   if (document.fonts?.ready) void document.fonts.ready.then(refresh);
   window.addEventListener("load", refresh, { once: true });
+  // content-visibility y fuentes pueden cambiar la altura: recalcular posiciones (debounce)
+  let t = 0;
+  let last = document.body.scrollHeight;
+  const ro = new ResizeObserver(() => {
+    const h = document.body.scrollHeight;
+    if (Math.abs(h - last) < 2) return;
+    last = h;
+    window.clearTimeout(t);
+    t = window.setTimeout(refresh, 200);
+  });
+  ro.observe(document.body);
 }

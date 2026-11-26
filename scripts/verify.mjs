@@ -72,7 +72,8 @@ const b = await chromium.launch();
   await p.focus('.nav__links a[href="#contacto"]');
   await p.keyboard.press("Enter");
   await p.waitForTimeout(1800);
-  ok("Nav: Enter lleva a #contacto y enfoca el título", await p.evaluate(() => location.hash === "#contacto" && document.activeElement?.id === "contact-title"));
+  const anchor = await p.evaluate(() => [location.hash, document.activeElement?.id, Math.round(document.getElementById("contacto").getBoundingClientRect().top)]);
+  ok("Nav: Enter lleva a #contacto, cae bajo la barra y enfoca el título", anchor[0] === "#contacto" && anchor[1] === "contact-title" && anchor[2] >= 40 && anchor[2] <= 80, JSON.stringify(anchor));
 
   // formulario
   const sub = 'form.form button[type="submit"]';

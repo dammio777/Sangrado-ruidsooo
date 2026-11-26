@@ -20,16 +20,22 @@ export function SiteImg({
 }) {
   if (image.src) {
     return (
-      <img
-        src={image.src}
-        alt={image.alt}
-        width={image.width}
-        height={image.height}
-        loading={priority ? "eager" : "lazy"}
-        decoding="async"
-        {...(priority ? { fetchPriority: "high" as const } : {})}
-        className={`site-img ${className}`}
-      />
+      <picture>
+        {image.avif && <source type="image/avif" srcSet={image.avif} sizes={image.sizes} />}
+        {image.webp && <source type="image/webp" srcSet={image.webp} sizes={image.sizes} />}
+        <img
+          src={image.src}
+          srcSet={image.srcset}
+          sizes={image.sizes}
+          alt={image.alt}
+          width={image.width}
+          height={image.height}
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          {...(priority ? { fetchPriority: "high" as const } : {})}
+          className={`site-img ${className}`}
+        />
+      </picture>
     );
   }
   return (

@@ -6,11 +6,6 @@ export const live = {
   vNorm: 0,
   /** progreso total de la página 0..1 */
   progress: 0,
-  pointerX: 0.5,
-  pointerY: 0.5,
-  pointerActive: false,
-  /** nivel de audio 0..1 cuando el sonido está ON */
-  audioLevel: 0,
   soundOn: false,
   lowPower: false,
 };

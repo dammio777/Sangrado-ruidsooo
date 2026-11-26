@@ -13,6 +13,13 @@ export type ImageCategory = "retrato" | "musica" | "sala" | "poster" | "buen-viv
 export interface SiteImage {
   /** Ruta del archivo en /public/img/. `null` = aún no entregado → placeholder. */
   src: string | null;
+  /** srcset AVIF / WebP opcionales (ej. "/img/retrato-800.avif 800w, /img/retrato-1600.avif 1600w") */
+  avif?: string;
+  webp?: string;
+  /** srcset del formato de respaldo (jpg) */
+  srcset?: string;
+  /** atributo sizes, ej. "(min-width: 1024px) 40vw, 90vw" */
+  sizes?: string;
   /** Nombre de archivo esperado (para el equipo). */
   wanted: string;
   alt: string;

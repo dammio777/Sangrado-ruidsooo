@@ -6,10 +6,6 @@ import { live } from "./live";
 
 let ctx: AudioContext | null = null;
 let master: GainNode | null = null;
-let analyser: AnalyserNode | null = null;
-let crackle: AudioBufferSourceNode | null = null;
-let timeData: Uint8Array<ArrayBuffer> | null = null;
-let freqData: Uint8Array<ArrayBuffer> | null = null;
 const VOLUME = 0.15;
 
 function makeCrackleBuffer(c: AudioContext) {
@@ -42,13 +38,7 @@ export async function enableAudio(withNeedleDrop = false) {
     ctx = new AC();
     master = ctx.createGain();
     master.gain.value = 0;
-    analyser = ctx.createAnalyser();
-    analyser.fftSize = 512;
-    analyser.smoothingTimeConstant = 0.7;
-    timeData = new Uint8Array(new ArrayBuffer(analyser.fftSize));
-    freqData = new Uint8Array(new ArrayBuffer(analyser.frequencyBinCount));
-    master.connect(analyser);
-    analyser.connect(ctx.destination);
+    master.connect(ctx.destination);
 
     const src = ctx.createBufferSource();
     src.buffer = makeCrackleBuffer(ctx);
@@ -63,7 +53,6 @@ export async function enableAudio(withNeedleDrop = false) {
     g.gain.value = 0.55;
     src.connect(hp).connect(lp).connect(g).connect(master);
     src.start();
-    crackle = src;
 
     document.addEventListener("visibilitychange", () => {
       if (!ctx) return;
@@ -141,39 +130,4 @@ export function uiTick(pitch = 1) {
   osc.connect(g).connect(master);
   osc.start(t);
   osc.stop(t + 0.008);
-}
-
-/** RMS 0..1 del analizador */
-export function readLevel(): number {
-  if (!analyser || !timeData || !live.soundOn) return 0;
-  analyser.getByteTimeDomainData(timeData);
-  let sum = 0;
-  for (let i = 0; i < timeData.length; i++) {
-    const v = (timeData[i]! - 128) / 128;
-    sum += v * v;
-  }
-  return Math.min(1, Math.sqrt(sum / timeData.length) * 6);
-}
-
-export function readTime(): Uint8Array | null {
-  if (!analyser || !timeData || !live.soundOn) return null;
-  analyser.getByteTimeDomainData(timeData);
-  return timeData;
-}
-
-export function readBands(n: number): number[] | null {
-  if (!analyser || !freqData || !live.soundOn) return null;
-  analyser.getByteFrequencyData(freqData);
-  const out: number[] = [];
-  const per = Math.floor(freqData.length / n / 1.6);
-  for (let b = 0; b < n; b++) {
-    let s = 0;
-    for (let i = 0; i < per; i++) s += freqData[b * per + i]!;
-    out.push(Math.min(1, (s / per / 255) * 2.4));
-  }
-  return out;
-}
-
-export function stopAll() {
-  crackle?.stop();
 }

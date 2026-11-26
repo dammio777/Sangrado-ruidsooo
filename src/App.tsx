@@ -1,9 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from "react";
-import { LazyMotion } from "motion/react";
 import { copy } from "./config/site";
 import { initReveals, refreshAfterFonts } from "./lib/reveal";
 import { restoreSound } from "./lib/sound";
-import { live } from "./lib/live";
 import { Navbar } from "./components/sections/Navbar";
 import { Hero } from "./components/sections/Hero";
 import { Manifesto } from "./components/sections/Manifesto";
@@ -17,7 +15,6 @@ import { Floating } from "./components/sections/Floating";
 import { Intro } from "./components/sections/Intro";
 import { Toast } from "./components/ui/Toast";
 
-const loadFeatures = () => import("./components/ui/motion-features").then((r) => r.default);
 const Overlays = lazy(() => import("./components/sections/Overlays"));
 
 declare global {
@@ -37,25 +34,11 @@ export function App() {
     restoreSound();
     const q = new URLSearchParams(location.search);
     if (q.has("demo") || q.has("pending")) setDev({ demo: q.has("demo"), pending: q.has("pending") });
-
-    const move = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse") return;
-      live.pointerX = e.clientX / window.innerWidth;
-      live.pointerY = e.clientY / window.innerHeight;
-      live.pointerActive = true;
-    };
-    const leave = () => (live.pointerActive = false);
-    window.addEventListener("pointermove", move, { passive: true });
-    document.documentElement.addEventListener("pointerleave", leave);
-    return () => {
-      offReveals();
-      window.removeEventListener("pointermove", move);
-      document.documentElement.removeEventListener("pointerleave", leave);
-    };
+    return () => offReveals();
   }, []);
 
   return (
-    <LazyMotion features={loadFeatures} strict>
+    <>
       <a className="skip" href="#main">
         {copy.skip}
       </a>
@@ -80,6 +63,6 @@ export function App() {
           <Overlays demo={dev.demo} pending={dev.pending} />
         </Suspense>
       )}
-    </LazyMotion>
+    </>
   );
 }
