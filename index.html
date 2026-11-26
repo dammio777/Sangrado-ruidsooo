@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es-CO" class="no-js" data-mood="brand">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Cristian Calle | Eventos, música y buen vivir en alta fidelidad · Medellín</title>
+    <meta name="description" content="Cristian Calle organiza eventos y selecciona música en vinilo en Santa Elena, Medellín. Hi-Fi en todo lo que hace, y videos sobre crecimiento personal y el buen vivir." />
+    <meta name="theme-color" content="#5C1A24" />
+    <meta name="color-scheme" content="dark light" />
+    <!--canonical-->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:site_name" content="Cristian Calle" />
+    <meta property="og:title" content="Cristian Calle | Eventos, música y buen vivir en alta fidelidad" />
+    <meta property="og:description" content="Eventos, música en vinilo y buen vivir en alta fidelidad. Santa Elena, Medellín." />
+    <meta property="og:image" content="%OG_IMAGE%" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Cristian Calle · Hi-Fi: wordmark crema sobre vino tinto con un disco" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Cristian Calle | Eventos, música y buen vivir en alta fidelidad" />
+    <meta name="twitter:description" content="Eventos, música en vinilo y buen vivir en alta fidelidad. Santa Elena, Medellín." />
+    <meta name="twitter:image" content="%OG_IMAGE%" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-light.svg" type="image/svg+xml" media="(prefers-color-scheme: light)" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="preload" href="/fonts/fraunces-latin-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/dm-sans-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <script>
+      // Sin FOUC: estados ocultos solo bajo html.js-motion. Intro solo en primera visita, sin #hash y sin reduced motion.
+      (function () {
+        var d = document.documentElement;
+        d.classList.remove("no-js");
+        d.classList.add("js");
+        var rm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (!rm) d.classList.add("js-motion");
+        var seen = false;
+        try { seen = sessionStorage.getItem("cc-intro") === "1"; } catch (e) {}
+        if (!rm && !seen && !location.hash) d.classList.add("intro-on");
+        // seguridad: si el JS no llega, todo queda visible
+        window.__ccFail = setTimeout(function () { d.classList.remove("js-motion", "intro-on"); }, 4500);
+      })();
+    </script>
+    <!--jsonld-->
+  </head>
+  <body>
+    <div id="root"><!--app-html--></div>
+    <noscript><style>.intro{display:none!important}</style></noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
