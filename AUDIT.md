@@ -163,8 +163,8 @@ Orden ejecutado (movimiento primero: elimina CSS que tipografía habría tocado 
 ## 5. Resultado de la revisión
 
 ### 5.1 Resumen
-- Encontrados: **0 P0 · 22 P1 · 27 P2 · 2 P3 · 2 ❓** (más los ítems que ya cumplían, marcados ✅ en las tablas).
-- Arreglados: **22/22 P1 · 26/27 P2 · 1/2 P3**. Sin cambiar: F2 (se mantiene a propósito) y B8 (P3, datos de `?demo`).
+- Encontrados: **0 P0 · 23 P1 · 23 P2 · 2 P3 · 2 ❓** (más 5 ítems que ya cumplían, marcados ✅ en las tablas).
+- Arreglados: **23/23 P1 · 22/23 P2 · 1/2 P3**. Sin cambiar: F2 (P2, se mantiene a propósito) y B8 (P3, datos de `?demo`).
 - Quedan para el dueño: **H1** (número de WhatsApp) y **J1** (dominio).
 
 ### 5.2 Estado por hallazgo
