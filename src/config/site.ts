@@ -304,10 +304,6 @@ export const copy = {
     secondary: "Escuchar el lado B",
     portraitCaption: "Foto próximamente",
   },
-  marquee: {
-    row1: ["Rock", "Salsa", "Soul", "Jazz", "Blues", "Fusiones", "Clásicos en vinilo"],
-    row2: ["MÚSICA SABROSA", "EVENTOS", "EXPERIENCIAS", "SANTA ELENA", "MEDELLÍN"],
-  },
   manifesto: {
     eyebrow: "HI-FI = HIGH FIDELITY",
     heading: "Qué es Hi-Fi",
@@ -320,7 +316,6 @@ export const copy = {
       ["Formato", "vinilo, en vivo, en la sala"],
       ["Origen", "Santa Elena, Medellín"],
     ] as [string, string][],
-    vuLabel: "NIVEL DE SEÑAL",
   },
   services: {
     heading: "Lo que hace",
@@ -397,6 +392,8 @@ export const copy = {
     },
     submit: "Enviar por WhatsApp",
     submitting: "Abriendo WhatsApp…",
+    statusIncomplete: "Completa los campos obligatorios",
+    statusReady: "Todo listo",
     sent: "Listo. Se abrió WhatsApp con tu mensaje: solo dale enviar.",
     sentHint: "¿No se abrió? Copia el mensaje y pégalo en el chat.",
     copy: "Copiar mensaje",
@@ -426,9 +423,19 @@ export const copy = {
   floating: "Hablemos",
   navCta: "Hablemos",
   menu: { open: "Abrir menú", close: "Cerrar menú" },
-  cursor: { record: "GIRAR", view: "VER" },
   photoSoon: "Foto próximamente",
   toast: { linkCopied: "Enlace copiado" },
+  a11y: {
+    home: "Cristian Calle, inicio",
+    mainNav: "Principal",
+    footerNav: "Pie de página",
+    menu: "Menú",
+    specSheet: "Hoja técnica",
+    whatsapp: "WhatsApp",
+    instagram: "Instagram",
+    floating: "Hablemos: escríbele a Cristian por WhatsApp",
+    newTab: "(abre Instagram en una pestaña nueva)",
+  },
 } as const;
 
 export const site = {

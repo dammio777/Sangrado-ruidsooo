@@ -106,7 +106,7 @@ export function Navbar() {
         <span className="nav__bg nav__bg--brand" aria-hidden="true" />
         <span className="nav__bg nav__bg--light" aria-hidden="true" />
         <div className="nav__inner">
-          <a href="#top" className="nav__brand" onClick={go("top")} aria-label="Cristian Calle, inicio">
+          <a href="#top" className="nav__brand" onClick={go("top")} aria-label={copy.a11y.home}>
             <span ref={mark} className="nav__mark">
               <Record variant="mini" sheen={false} />
               <svg className="nav__ring" viewBox="0 0 34 34" aria-hidden="true">
@@ -116,7 +116,7 @@ export function Navbar() {
             </span>
             <span className="nav__word">{person.name}</span>
           </a>
-          <nav className="nav__links" aria-label="Principal">
+          <nav className="nav__links" aria-label={copy.a11y.mainNav}>
             <ul>
               {nav.map((n) => (
                 <li key={n.id}>
@@ -155,7 +155,7 @@ export function Navbar() {
         data-surface="brand"
         role="dialog"
         aria-modal="true"
-        aria-label="Menú"
+        aria-label={copy.a11y.menu}
         inert={!open}
       >
         <div className="menu__inner">
@@ -175,10 +175,10 @@ export function Navbar() {
           <div className="menu__foot">
             <SoundToggle />
             <div className="menu__social">
-              <a href={person.instagram.url} target="_blank" rel="noopener" className="icon-btn" aria-label={`Instagram ${person.instagram.handle}`}>
+              <a href={person.instagram.url} target="_blank" rel="noopener" className="icon-btn" aria-label={`${copy.a11y.instagram} ${person.instagram.handle}`}>
                 <IconInstagram />
               </a>
-              <a href={waHref()} className="icon-btn" aria-label="WhatsApp" onClick={person.whatsapp ? undefined : go("contacto")}>
+              <a href={waHref()} className="icon-btn" aria-label={copy.a11y.whatsapp} onClick={person.whatsapp ? undefined : go("contacto")}>
                 <IconWhatsApp />
               </a>
             </div>

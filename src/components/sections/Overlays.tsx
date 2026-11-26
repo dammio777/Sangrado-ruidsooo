@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { pendingList } from "../../config/site";
+import { validateConfig } from "../../config/validate";
 
 const PALETTES = {
   a: { name: "A · Vino tinto", vars: {} as Record<string, string> },
@@ -59,6 +60,12 @@ export default function Overlays({ demo, pending }: { demo: boolean; pending: bo
           </div>
           <ul>
             {pendingList().map((p) => (
+              <li key={p}>{p}</li>
+            ))}
+          </ul>
+          <p className="mono">CAMPOS DE CONFIG · {validateConfig().length}</p>
+          <ul>
+            {validateConfig().map((p) => (
               <li key={p}>{p}</li>
             ))}
           </ul>

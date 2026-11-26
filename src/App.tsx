@@ -1,7 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { LazyMotion } from "motion/react";
 import { copy } from "./config/site";
-import { validateConfig } from "./config/validate";
 import { initReveals, refreshAfterFonts } from "./lib/reveal";
 import { restoreSound } from "./lib/sound";
 import { live } from "./lib/live";
@@ -36,7 +35,6 @@ export function App() {
     const offReveals = initReveals();
     refreshAfterFonts();
     restoreSound();
-    validateConfig();
     const q = new URLSearchParams(location.search);
     if (q.has("demo") || q.has("pending")) setDev({ demo: q.has("demo"), pending: q.has("pending") });
 

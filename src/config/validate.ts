@@ -1,6 +1,6 @@
 import { person, services, sessions, reels, pillars, copy } from "./site";
 
-/** Guardia tipada en arranque: en desarrollo avisa qué campos faltan. */
+/** Guardia tipada: lista los campos que faltan (se ven con `?pending`). */
 export function validateConfig(): string[] {
   const missing: string[] = [];
   const req = (cond: unknown, label: string) => {
@@ -24,8 +24,5 @@ export function validateConfig(): string[] {
   req(pillars.length === 3, "pillars (3)");
   req(reels.length >= 3 && reels.length <= 6, "reels (3–6)");
   req(copy.contact.template.includes("{nombre}"), "copy.contact.template");
-  if (import.meta.env.DEV && missing.length) {
-    console.info(`[site.ts] Campos pendientes (${missing.length}):\n· ${missing.join("\n· ")}`);
-  }
   return missing;
 }

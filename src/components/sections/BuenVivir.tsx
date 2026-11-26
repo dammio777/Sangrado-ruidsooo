@@ -166,7 +166,7 @@ export function BuenVivir() {
                   </span>
                   <span className="reel__caption">
                     {r.caption}
-                    <span className="sr-only"> (abre Instagram en una pestaña nueva)</span>
+                    <span className="sr-only"> {copy.a11y.newTab}</span>
                   </span>
                 </a>
               </li>

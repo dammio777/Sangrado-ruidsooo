@@ -69,7 +69,7 @@ export function Manifesto() {
             </p>
           </div>
         </div>
-        <aside className="manifesto__side" aria-label="Hoja técnica">
+        <aside className="manifesto__side" aria-label={copy.a11y.specSheet}>
           <div className="spec">
             <p className="spec__title mono" data-reveal="up">
               {copy.manifesto.specTitle}

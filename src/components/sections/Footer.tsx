@@ -75,7 +75,7 @@ export function Footer() {
           <path ref={wave} d={WAVE} />
         </svg>
         <div className="footer__grid">
-          <nav aria-label="Pie de página" className="footer__nav">
+          <nav aria-label={copy.a11y.footerNav} className="footer__nav">
             <ul>
               {nav.map((n) => (
                 <li key={n.id}>
@@ -97,7 +97,7 @@ export function Footer() {
               <IconInstagram size={18} /> {person.instagram.handle}
             </a>
             <a href={waHref()} className="footer__link" {...(person.whatsapp ? { target: "_blank", rel: "noopener" } : {})}>
-              <IconWhatsApp size={18} /> WhatsApp
+              <IconWhatsApp size={18} /> {copy.a11y.whatsapp}
             </a>
           </div>
           <button type="button" className="btn btn--secondary footer__back" onClick={back}>

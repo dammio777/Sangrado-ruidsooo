@@ -217,7 +217,7 @@ export function Contact() {
                   {state === "sending" ? C.submitting : C.submit}
                 </Button>
                 <p id={id("status")} className="form__status mono" role="status" aria-live="polite">
-                  {state === "sending" ? C.submitting : !valid ? "Completa los campos obligatorios" : "Todo listo"}
+                  {state === "sending" ? C.submitting : !valid ? C.statusIncomplete : C.statusReady}
                 </p>
               </div>
             </form>

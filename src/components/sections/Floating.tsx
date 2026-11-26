@@ -40,7 +40,7 @@ export function Floating() {
       className="floating"
       data-surface="brand"
       {...(person.whatsapp ? { target: "_blank", rel: "noopener" } : {})}
-      aria-label={`${copy.floating}: escríbele a Cristian por WhatsApp`}
+      aria-label={copy.a11y.floating}
     >
       <IconWhatsApp size={18} />
       <span>{copy.floating}</span>
