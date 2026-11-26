@@ -426,6 +426,7 @@ export const copy = {
     on: "Silenciar",
     off: "Activar sonido",
     pending: "El sonido arrancará con tu primer clic",
+    error: "Este navegador no permitió activar el sonido",
   },
   floating: "Hablemos",
   navCta: "Hablemos",

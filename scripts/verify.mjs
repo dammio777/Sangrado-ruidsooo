@@ -95,6 +95,22 @@ const b = await chromium.launch();
   await ctx.close();
 }
 
+// ── Sonido con AudioContext bloqueado ──
+{
+  const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } });
+  await ctx.addInitScript(() => { window.AudioContext = class { constructor() { throw new Error("blocked"); } }; });
+  const p = await ctx.newPage();
+  const errs = [];
+  p.on("pageerror", (e) => errs.push(e.message));
+  await p.goto(URL + "#top", { waitUntil: "networkidle" });
+  await p.waitForTimeout(800);
+  await p.click(".nav [data-sound-toggle]");
+  await p.waitForTimeout(800);
+  const st = await p.evaluate(() => [document.querySelector(".nav [data-sound-toggle]").getAttribute("aria-pressed"), localStorage.getItem("cc-sound"), document.querySelector(".toast")?.textContent]);
+  ok("Sonido bloqueado: el toggle vuelve a OFF, avisa y no hay errores", st[0] === "false" && st[1] === "0" && /sonido/i.test(st[2] || "") && errs.length === 0, JSON.stringify([st, errs]));
+  await ctx.close();
+}
+
 // ── Menú móvil con teclado ──
 {
   const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });

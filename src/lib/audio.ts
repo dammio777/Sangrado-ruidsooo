@@ -34,7 +34,8 @@ function makeCrackleBuffer(c: AudioContext) {
 
 export async function enableAudio(withNeedleDrop = false) {
   if (!ctx) {
-    const AC = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    const AC = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (!AC) throw new Error("Web Audio no disponible");
     ctx = new AC();
     master = ctx.createGain();
     master.gain.value = 0;

@@ -1,6 +1,7 @@
 /** Puente ligero hacia lib/audio (carga diferida). */
 import { useUI } from "./store";
 import { live } from "./live";
+import { copy } from "../config/site";
 
 type AudioMod = typeof import("./audio");
 let mod: AudioMod | null = null;
@@ -25,8 +26,16 @@ export async function setSound(on: boolean, needle = false) {
   useUI.getState().setSound(on);
   remember(on);
   if (on) {
-    const m = await loadAudio();
-    await m.enableAudio(needle);
+    try {
+      const m = await loadAudio();
+      await m.enableAudio(needle);
+    } catch {
+      // AudioContext bloqueado o sin soporte: volver a OFF sin romper nada
+      live.soundOn = false;
+      useUI.getState().setSound(false);
+      remember(false);
+      useUI.getState().showToast(copy.sound.error);
+    }
   } else {
     live.soundOn = false;
     mod?.disableAudio();
