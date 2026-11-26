@@ -28,5 +28,5 @@ node scripts/serve.mjs &
 node scripts/shots.mjs      # capturas 375/768/1440, overflow a 320, errores de consola
 node scripts/verify.mjs     # teclado, sonido, scroll, reduced motion, sin JS
 node scripts/lh.mjs         # Lighthouse móvil
-node scripts/brand-assets.mjs  # regenera og.png e íconos
+node scripts/brand-assets.mjs  # regenera og.png e íconos (y python3 scripts/favicon.py para el favicon)
 ```

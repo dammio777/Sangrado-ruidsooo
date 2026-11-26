@@ -15,20 +15,20 @@ for (let i = 0; i < 36; i++) {
   const r = 84 + (i / 35) * 108;
   grooves += `<circle cx="200" cy="200" r="${r.toFixed(1)}" fill="none" stroke="#3D0F17" stroke-opacity="${i % 3 ? 0.42 : 0.65}" stroke-width="${i % 9 === 4 ? 1.6 : 0.6}"/>`;
 }
-const record = `<svg viewBox="0 0 400 400" width="760" height="760"><circle cx="200" cy="200" r="199" fill="#1C0A0D"/>${grooves}<circle cx="200" cy="200" r="74" fill="#5C1A24"/><circle cx="200" cy="200" r="70" fill="none" stroke="#D4A659" stroke-opacity=".5"/><defs><path id="p" d="M200 200 m-58 0 a58 58 0 1 1 116 0 a58 58 0 1 1 -116 0"/></defs><text font-family="Plex" font-size="8.4" letter-spacing="1.4" fill="#F2E6D0"><textPath href="#p">CRISTIAN CALLE · HI-FI · LADO A · 33⅓ RPM · CC-001 · </textPath></text><text x="200" y="188" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="38" fill="#F2E6D0">CC</text><text x="200" y="228" text-anchor="middle" font-family="Plex" font-size="9" letter-spacing="1.5" fill="#D9A3A0">33⅓</text><circle cx="200" cy="200" r="4.5" fill="#1C0A0D"/></svg>`;
+const record = `<svg viewBox="0 0 400 400" width="760" height="760"><circle cx="200" cy="200" r="199" fill="#1C0A0D"/>${grooves}<circle cx="200" cy="200" r="74" fill="#5C1A24"/><circle cx="200" cy="200" r="70" fill="none" stroke="#F2E6D0" stroke-opacity=".3"/><text x="200" y="214" text-anchor="middle" font-family="Inter Tight" font-weight="650" font-size="40" letter-spacing="-1.6" fill="#F2E6D0">CC</text></svg>`;
 
 const css = `
-@font-face{font-family:Fraunces;src:url(${font("fraunces-latin-normal.woff2")});font-weight:300 600}
-@font-face{font-family:Fraunces;src:url(${font("fraunces-latin-italic.woff2")});font-style:italic;font-weight:300 600}
-@font-face{font-family:Plex;src:url(${font("ibm-plex-mono-latin-500-normal.woff2")})}
+@font-face{font-family:"Inter Tight";src:url(${font("inter-tight-latin-wght.woff2")});font-weight:500 700}
+@font-face{font-family:Inter;src:url(${font("inter-latin-wght.woff2")});font-weight:400 600}
+@font-face{font-family:Serif;src:url(${font("instrument-serif-latin-italic.woff2")});font-style:italic}
 *{margin:0;box-sizing:border-box}
-body{width:1200px;height:630px;background:#5C1A24;color:#F2E6D0;position:relative;overflow:hidden;font-family:Fraunces}
+body{width:1200px;height:630px;background:#5C1A24;color:#F2E6D0;position:relative;overflow:hidden;font-family:"Inter Tight"}
 .rec{position:absolute;right:-230px;top:-65px}
-.label{position:absolute;left:72px;top:64px;font:500 18px Plex;letter-spacing:.14em;color:#D4A659}
-.name{position:absolute;left:66px;top:150px;font-weight:300;font-size:150px;line-height:.9;letter-spacing:-.035em;font-variation-settings:"SOFT" 100,"opsz" 144}
-.hifi{position:absolute;left:72px;top:418px;font-style:italic;font-size:96px;color:#D4A659;letter-spacing:-.03em;font-variation-settings:"SOFT" 100,"opsz" 144}
-.foot{position:absolute;left:72px;bottom:52px;font:500 16px Plex;letter-spacing:.14em;color:#D9A3A0}
-.line{position:absolute;left:72px;right:72px;bottom:96px;height:1px;background:rgba(212,166,89,.45)}
+.label{position:absolute;left:72px;top:64px;font:600 18px Inter;letter-spacing:.06em;color:#D9A3A0}
+.name{position:absolute;left:66px;top:140px;font-weight:650;font-size:150px;line-height:.94;letter-spacing:-.04em}
+.hifi{position:absolute;left:72px;top:428px;font-family:Serif;font-style:italic;font-size:100px;color:#D4A659;letter-spacing:-.01em}
+.foot{position:absolute;left:72px;bottom:52px;font:600 16px Inter;letter-spacing:.06em;color:#D9A3A0}
+.line{position:absolute;left:72px;right:72px;bottom:96px;height:1px;background:rgba(242,230,208,.18)}
 `;
 const og = `<!doctype html><html><head><style>${css}</style></head><body><div class="rec">${record}</div><div class="label">CC-001 · LADO A · SANTA ELENA, MEDELLÍN</div><div class="name">Cristian<br>Calle</div><div class="hifi">Hi-Fi</div><div class="line"></div><div class="foot">EVENTOS · MÚSICA EN VINILO · BUEN VIVIR</div></body></html>`;
 
