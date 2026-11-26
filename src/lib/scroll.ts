@@ -49,13 +49,23 @@ export function scrollToId(id: string, opts: { focus?: boolean; updateHash?: boo
       heading.focus({ preventScroll: true });
     }
   };
+  // content-visibility puede cambiar alturas durante el recorrido: si el destino se movió, corregir
+  const settle = (tries = 2) => {
+    const delta = el.getBoundingClientRect().top - (NAV_OFFSET - 1);
+    if (Math.abs(delta) <= 3 || tries === 0) return done();
+    if (lenis) lenis.scrollTo(el, { offset: -NAV_OFFSET + 1, duration: 0.4, onComplete: () => settle(tries - 1) });
+    else {
+      window.scrollBy({ top: delta, behavior: reduce ? "auto" : "smooth" });
+      window.setTimeout(() => settle(tries - 1), reduce ? 0 : 450);
+    }
+  };
   if (opts.updateHash !== false) history.pushState(null, "", `#${id}`);
   if (lenis) {
-    lenis.scrollTo(el, { offset: -NAV_OFFSET + 1, duration: 1.2, onComplete: done });
+    lenis.scrollTo(el, { offset: -NAV_OFFSET + 1, duration: 1.2, onComplete: () => settle() });
   } else {
     const top = el.getBoundingClientRect().top + window.scrollY - NAV_OFFSET + 1;
     window.scrollTo({ top, behavior: reduce ? "auto" : "smooth" });
-    window.setTimeout(done, reduce ? 0 : 700);
+    window.setTimeout(() => settle(), reduce ? 0 : 700);
   }
 }
 
