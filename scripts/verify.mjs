@@ -80,7 +80,7 @@ const b = await chromium.launch();
   await p.fill('input[name="nombre"]', "Ana");
   await p.fill('input[name="celular"]', "12");
   await p.locator('input[name="celular"]').blur();
-  ok("Formulario: validación inline al salir del campo", (await p.locator(".field__err").count()) > 0);
+  ok("Formulario: validación inline al salir del campo (texto + ícono, aria-live)", await p.evaluate(() => { const e = [...document.querySelectorAll(".field__err")].find((n) => n.textContent.trim()); return !!e && !!e.querySelector("svg") && e.getAttribute("aria-live") === "polite"; }));
   await p.fill('input[name="celular"]', "3001234567");
   await p.check('input[name="tipo"][value="Boda"]');
   await p.fill('textarea[name="mensaje"]', "Queremos música en vinilo para la boda.");
@@ -168,7 +168,7 @@ for (const [name, opts] of [["reduced motion", { reducedMotion: "reduce" }], ["s
       const cs = getComputedStyle(el);
       if (el.closest(".sr-only,[aria-hidden=true]")) return;
       // ocultos a propósito: pista del riel en móvil y leyenda animada sustituida por la etiqueta estática
-      if (el.matches(".rail-hint, .flip__caption")) return;
+      if (el.matches(".rail-hint, .flip__caption, .field__err:empty")) return;
       if (cs.visibility === "hidden" || cs.opacity === "0" || cs.display === "none") out.push(el.tagName + "." + el.className);
     });
     return out;

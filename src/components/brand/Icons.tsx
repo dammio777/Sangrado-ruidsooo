@@ -81,6 +81,12 @@ export const IconCheck = ({ size = 18, ...p }: P) => (
     <path d="M5 12.5l4.5 4.5L19 7.5" />
   </svg>
 );
+export const IconAlert = ({ size = 16, ...p }: P) => (
+  <svg {...base(size, p)}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 7.5v5.5M12 16.2v.3" />
+  </svg>
+);
 export const IconSpark = ({ size = 14, ...p }: P) => (
   <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" focusable="false" {...p}>
     <path d="M12 1.5c.6 5.6 4.9 9.9 10.5 10.5-5.6.6-9.9 4.9-10.5 10.5C11.4 16.9 7.1 12.6 1.5 12 7.1 11.4 11.4 7.1 12 1.5z" fill="currentColor" />

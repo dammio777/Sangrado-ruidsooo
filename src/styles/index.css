@@ -2072,9 +2072,19 @@ a.direct__link:hover {
   border-color: var(--danger);
 }
 .field__err {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
   margin: 0;
   font-size: var(--t-body-sm);
   color: var(--danger);
+}
+.field__err:empty {
+  display: none;
+}
+.field__err svg {
+  flex-shrink: 0;
+  margin-top: 0.2em;
 }
 .field__ok {
   position: absolute;

@@ -3,7 +3,7 @@ import { gsap, morph } from "../../lib/gsap";
 import { contactTypes, copy, person } from "../../config/site";
 import { buildMessage, waLink, type ContactData } from "../../lib/whatsapp";
 import { Button } from "../ui/Button";
-import { IconCheck, IconCopy, IconInstagram, IconMail, IconWhatsApp } from "../brand/Icons";
+import { IconAlert, IconCheck, IconCopy, IconInstagram, IconMail, IconWhatsApp } from "../brand/Icons";
 import { motionOK } from "../../lib/env";
 import { sinePath, noisyPath, flatPath } from "../../lib/signal";
 import { useUI } from "../../lib/store";
@@ -161,13 +161,13 @@ export function Contact() {
                   <label htmlFor={id("nombre")}>{C.fields.nombre}</label>
                   <input id={id("nombre")} name="nombre" autoComplete="name" required value={data.nombre} onChange={set("nombre")} onBlur={blur("nombre")} placeholder={C.placeholders.nombre} aria-invalid={!!show("nombre")} aria-describedby={describe("nombre")} />
                   <FieldCheck />
-                  {show("nombre") && <p id={id("nombre-err")} className="field__err">{errors.nombre}</p>}
+                  <FieldError id={id("nombre-err")} msg={show("nombre") ? errors.nombre : undefined} />
                 </div>
                 <div className={`field ${show("celular") ? "is-invalid" : ""} ${touched.celular && !errors.celular ? "is-valid" : ""}`}>
                   <label htmlFor={id("celular")}>{C.fields.celular}</label>
                   <input id={id("celular")} name="celular" type="tel" inputMode="numeric" autoComplete="tel-national" required value={data.celular} onChange={set("celular")} onBlur={blur("celular")} placeholder={C.placeholders.celular} aria-invalid={!!show("celular")} aria-describedby={describe("celular")} maxLength={14} />
                   <FieldCheck />
-                  {show("celular") && <p id={id("celular-err")} className="field__err">{errors.celular}</p>}
+                  <FieldError id={id("celular-err")} msg={show("celular") ? errors.celular : undefined} />
                 </div>
               </div>
 
@@ -181,7 +181,7 @@ export function Contact() {
                     </label>
                   ))}
                 </div>
-                {show("tipo") && <p id={id("tipo-err")} className="field__err">{errors.tipo}</p>}
+                <FieldError id={id("tipo-err")} msg={show("tipo") ? errors.tipo : undefined} />
               </fieldset>
 
               <div className="form__row form__row--3">
@@ -196,7 +196,7 @@ export function Contact() {
                     {C.fields.personas} <span className="field__opt">({C.fields.optional})</span>
                   </label>
                   <input id={id("personas")} name="personas" inputMode="numeric" value={data.personas} onChange={set("personas")} onBlur={blur("personas")} placeholder={C.placeholders.personas} aria-invalid={!!show("personas")} aria-describedby={describe("personas")} />
-                  {show("personas") && <p id={id("personas-err")} className="field__err">{errors.personas}</p>}
+                  <FieldError id={id("personas-err")} msg={show("personas") ? errors.personas : undefined} />
                 </div>
                 <div className="field">
                   <label htmlFor={id("lugar")}>
@@ -209,7 +209,7 @@ export function Contact() {
               <div className={`field ${show("mensaje") ? "is-invalid" : ""} ${touched.mensaje && !errors.mensaje ? "is-valid" : ""}`}>
                 <label htmlFor={id("mensaje")}>{C.fields.mensaje}</label>
                 <textarea id={id("mensaje")} name="mensaje" rows={4} required value={data.mensaje} onChange={set("mensaje")} onBlur={blur("mensaje")} placeholder={C.placeholders.mensaje} aria-invalid={!!show("mensaje")} aria-describedby={describe("mensaje")} />
-                {show("mensaje") && <p id={id("mensaje-err")} className="field__err">{errors.mensaje}</p>}
+                <FieldError id={id("mensaje-err")} msg={show("mensaje") ? errors.mensaje : undefined} />
               </div>
 
               <div className="form__submit">
@@ -254,6 +254,20 @@ export function Contact() {
         </div>
       </div>
     </section>
+  );
+}
+
+/** Error de campo: región viva siempre presente; texto + ícono cuando hay error. */
+function FieldError({ id, msg }: { id: string; msg?: string | false }) {
+  return (
+    <p id={id} className="field__err" aria-live="polite">
+      {msg ? (
+        <>
+          <IconAlert size={16} aria-hidden="true" />
+          <span>{msg}</span>
+        </>
+      ) : null}
+    </p>
   );
 }
 
