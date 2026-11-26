@@ -148,15 +148,65 @@ Severidad: P0 roto/prohibido · P1 violación visible de la spec · P2 pulido ·
 
 No hay P0. Orden: P1 → P2 → P3 rápidos.
 
-1. `typography` — A1–A6, A8.
-2. `color` — B1–B7, E4 (label sin microtexto), C17.
-3. `motion` — C1–C16, G1, D1 (efectos v1 fuera, riel, transición, intro, spin; quita ScrambleText/CustomEase/Flip). E1 se resuelve sobre todo aquí.
+Orden ejecutado (movimiento primero: elimina CSS que tipografía habría tocado en vano):
+
+1. `motion` — C1–C17, G1, D1.
+2. `typography` — A1–A6, A8.
+3. `color` — B1–B7, E4.
 4. `accessibility` — F1.
 5. `content` — G2, K2.
-6. `performance` — E2, E3, K1, K4 (y verificación de E1).
-7. `seo` — A7 / J2 (favicon, OG, íconos).
-8. `functionality` — H2 (audio, al final: es el módulo de riesgo; se revierte con `git revert` de ese commit).
+6. `performance` — E1, E2, E3, K1, K4.
+7. `seo` — A7 / J2.
+8. `functionality` — H2 (audio, riesgo: commit propio).
+9. `scroll` — corrección de anclajes con `content-visibility` (riesgo: commit propio, al final).
 
-## 5. Resultado
+## 5. Resultado de la revisión
 
-Ver sección «Resultado de la revisión» al final, que se completa después de los arreglos.
+### 5.1 Resumen
+- Encontrados: **0 P0 · 22 P1 · 27 P2 · 2 P3 · 2 ❓** (más los ítems que ya cumplían, marcados ✅ en las tablas).
+- Arreglados: **22/22 P1 · 26/27 P2 · 1/2 P3**. Sin cambiar: F2 (se mantiene a propósito) y B8 (P3, datos de `?demo`).
+- Quedan para el dueño: **H1** (número de WhatsApp) y **J1** (dominio).
+
+### 5.2 Estado por hallazgo
+| ID | Estado | Nota |
+|---|---|---|
+| A1–A6, A8 | ✅ | Inter Tight / Inter / Instrument Serif; fuentes 81 KB |
+| A7, J2 | ✅ | favicon (`scripts/favicon.py`), OG e íconos regenerados |
+| B1–B7 | ✅ | contrastes en `verify-out/contrast.txt` (todos ≥ 4,5:1) |
+| B8 | ⏭️ | P3: las paletas de `?demo` son datos de DESIGN §1.6 |
+| C1–C17 | ✅ | catálogo v2; intro 1,2 s; disco 24 s/vuelta |
+| D1 | ✅ | riel nativo; ningún `preventDefault` en teclas |
+| E1 | ✅ | JS inicial 139 KB gzip |
+| E2 | ✅ | `content-visibility` + refresh + corrección de anclajes |
+| E3 | ✅ | `<picture>` AVIF/WebP + `srcset`/`sizes` listos para cuando haya fotos |
+| E4 | ✅ | sin microtexto: Best Practices 96 → 100 |
+| F1 | ✅ | error = texto + ícono, `aria-live="polite"` |
+| F2 | ⏭️ | Se mantiene `aria:"none"`: el texto real queda en el DOM; `aria-label` en `span`/`p` falla axe |
+| G1, G2 | ✅ | |
+| H1 | ❓ | falta el número: hoy `wa.me/?text=` |
+| H2 | ✅ | |
+| J1 | ❓ | falta el dominio (`SITE_URL`) |
+| K1–K4 | ✅ | |
+
+### 5.3 Métricas antes / después (Lighthouse móvil, 3 corridas; servidor con gzip)
+| Métrica | Antes | Después |
+|---|---|---|
+| Performance | 92–93 | 98–99 |
+| Accessibility | 100 | 100 |
+| Best Practices | 96 | 100 |
+| SEO | 100 | 100 |
+| LCP | 2,3 s | 1,5–1,7 s |
+| CLS | 0,02 | 0 |
+| TBT | 170–230 ms | 110–130 ms |
+| INP de laboratorio (CPU ×4) | 88 ms | 96 ms |
+| JS inicial (gzip) | ≈ 170 KB | 139 KB |
+| Fuentes | ≈ 200 KB | 81 KB |
+| Peso total de la página | 471 KB | 261 KB |
+
+El INP sube 8 ms (sigue muy por debajo de 200 ms): la hoja de servicios ahora trae Motion en su propio chunk al abrirse por primera vez.
+
+### 5.4 Verificación
+- `npm run build`: 0 errores de TS, 0 errores/avisos de consola en 320/375/768/1440.
+- `scripts/verify.mjs`: **26/26 PASS** (teclado, hoja, riel, formulario, menú, sonido OFF/persistencia/pestaña oculta/bloqueado, rueda, táctil, AvPág/Espacio/Inicio/Fin, bajo consumo, reduced motion, sin JS).
+- Sin overflow a 320 px. `grep -ri "monte hi"` en `src`, `dist`, `public`: 0 resultados.
+- Capturas en `verify-out/before|after/` y comparaciones en `verify-out/compare/` (carpeta local, fuera de git). El intro a mitad no tiene captura "antes": el script v1 no capturaba ese momento.

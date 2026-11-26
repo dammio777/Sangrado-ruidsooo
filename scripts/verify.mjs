@@ -173,6 +173,38 @@ const b = await chromium.launch();
   await m.close();
 }
 
+// ── Teclado de página (con Lenis en escritorio) ──
+{
+  const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } });
+  const p = await ctx.newPage();
+  await p.goto(URL + "#top", { waitUntil: "networkidle" });
+  await p.waitForTimeout(1000);
+  await p.mouse.click(700, 760); // foco en el documento, fuera de controles
+  const y = async () => p.evaluate(() => Math.round(scrollY));
+  const r = [];
+  for (const k of ["PageDown", "Space", "ArrowDown", "End", "Home"]) { await p.keyboard.press(k); await p.waitForTimeout(900); r.push([k, await y()]); }
+  const max = await p.evaluate(() => document.documentElement.scrollHeight - innerHeight);
+  ok("Teclado: AvPág, Espacio y ↓ bajan; Fin llega al final; Inicio vuelve arriba", r[0][1] > 0 && r[1][1] > r[0][1] && r[2][1] > r[1][1] && Math.abs(r[3][1] - max) < 4 && r[4][1] === 0, JSON.stringify(r));
+  await ctx.close();
+}
+
+// ── Bajo consumo (hardwareConcurrency 2) ──
+{
+  const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } });
+  await ctx.addInitScript(() => Object.defineProperty(navigator, "hardwareConcurrency", { get: () => 2 }));
+  const p = await ctx.newPage();
+  const errs = [];
+  p.on("pageerror", (e) => errs.push(e.message));
+  await p.goto(URL + "#buen-vivir", { waitUntil: "networkidle" });
+  await p.waitForTimeout(1200);
+  const y0 = await p.evaluate(() => getComputedStyle(document.querySelector(".bv__sun")).transform);
+  await p.mouse.wheel(0, 500);
+  await p.waitForTimeout(1200);
+  const y1 = await p.evaluate(() => getComputedStyle(document.querySelector(".bv__sun")).transform);
+  ok("Bajo consumo: sin parallax y sin errores", y0 === y1 && errs.length === 0, JSON.stringify([y0, y1, errs]));
+  await ctx.close();
+}
+
 // ── Reduced motion y sin JS: todo el contenido visible ──
 for (const [name, opts] of [["reduced motion", { reducedMotion: "reduce" }], ["sin JS", { javaScriptEnabled: false }]]) {
   const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, ...opts });
