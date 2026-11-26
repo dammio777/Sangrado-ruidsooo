@@ -122,7 +122,8 @@ export function BuenVivir() {
             {copy.buenVivir.eyebrow}
           </p>
           <h2 id="bv-title" className="bv__title" data-reveal="lines" data-focus-target>
-            {copy.buenVivir.heading}
+            {copy.buenVivir.heading.replace(copy.buenVivir.headingAccent, "")}
+            <span className="serif-accent">{copy.buenVivir.headingAccent}</span>
           </h2>
           <p className="accent bv__accent" data-reveal="up" data-delay="0.15">
             {copy.buenVivir.accent}

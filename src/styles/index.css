@@ -12,9 +12,9 @@
   --color-dark-2: #2b1116;
   --color-accent: #d4a659;
   --color-accent-2: #e8643a;
-  --font-display: "Fraunces", "Fraunces Fallback", Georgia, serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --font-body: "DM Sans", "DM Sans Fallback", system-ui, sans-serif;
+  --font-display: "Inter Tight", "Inter Tight Fallback", system-ui, sans-serif;
+  --font-body: "Inter", "Inter Fallback", system-ui, sans-serif;
+  --font-serif: "Instrument Serif", "Instrument Serif Fallback", Georgia, serif;
   --radius-card: 6px;
   --radius-panel: 20px;
   --radius-input: 10px;
@@ -144,11 +144,11 @@ p {
 }
 .eyebrow {
   display: inline-block;
-  font-family: var(--f-accent);
-  font-weight: 500;
+  font-family: var(--f-body);
+  font-weight: 600;
   font-size: var(--t-eyebrow);
   line-height: 1.3;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-accent);
 }
@@ -161,29 +161,32 @@ p {
 }
 .accent {
   font-family: var(--f-display);
-  font-style: italic;
-  font-weight: 400;
+  font-weight: 500;
   font-size: var(--t-accent);
   line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+/* Instrument Serif itálica: solo "Hi-Fi" y "buen vivir" (máx. 2 palabras por pantalla) */
+.serif-accent {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 400;
   letter-spacing: -0.01em;
-  font-variation-settings: "SOFT" 100;
 }
 .subheading {
   font-family: var(--f-display);
-  font-weight: 400;
+  font-weight: 600;
   font-size: var(--t-subheading);
   line-height: 1.05;
-  letter-spacing: -0.015em;
-  font-variation-settings: "SOFT" 60;
+  letter-spacing: -0.03em;
   margin: 0;
 }
 .heading {
   font-family: var(--f-display);
-  font-weight: 350;
+  font-weight: 600;
   font-size: var(--t-heading);
-  line-height: 0.98;
-  letter-spacing: -0.025em;
-  font-variation-settings: "SOFT" 60, "opsz" 144;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
   margin: 0;
 }
 .rule {
@@ -445,21 +448,20 @@ p {
   font-family: var(--f-accent);
   font-weight: 500;
   font-size: 8.4px;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.08em;
   fill: var(--c-light);
 }
 .record__center {
   font-family: var(--f-display);
-  font-style: italic;
-  font-weight: 400;
+  font-weight: 650;
+  letter-spacing: -0.04em;
   font-size: 36px;
   fill: var(--c-light);
-  font-variation-settings: "SOFT" 100;
 }
 .record__rpm {
   font-family: var(--f-accent);
   font-size: 8.5px;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.08em;
   fill: var(--c-brand-soft);
 }
 .record__hole {
@@ -491,7 +493,7 @@ p {
 }
 .monogram__cc {
   font-family: var(--f-display);
-  font-style: italic;
+  font-weight: 650;
   font-size: 18px;
   fill: var(--c-light);
 }
@@ -605,7 +607,7 @@ p {
   margin-top: 46%;
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
@@ -698,10 +700,9 @@ p {
 }
 .nav__word {
   font-family: var(--f-display);
-  font-weight: 400;
+  font-weight: 600;
   font-size: 1.15rem;
   letter-spacing: -0.02em;
-  font-variation-settings: "SOFT" 100;
   white-space: nowrap;
 }
 .nav__links {
@@ -805,7 +806,7 @@ p {
 .sound__label {
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
 }
 .sound__dot {
   width: 6px;
@@ -879,18 +880,17 @@ p {
 .menu__track {
   font-size: 12px;
   color: var(--text-accent);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   min-width: 2rem;
 }
 .menu__label {
   display: block;
   overflow: hidden;
   font-family: var(--f-display);
-  font-weight: 350;
+  font-weight: 600;
   font-size: 48px;
   line-height: 1.05;
-  letter-spacing: -0.02em;
-  font-variation-settings: "SOFT" 100;
+  letter-spacing: -0.03em;
 }
 .menu__label > span {
   display: inline-block;
@@ -995,16 +995,15 @@ p {
 }
 .hero__title {
   margin: 0;
-  font-weight: 300;
+  font-weight: 650;
 }
 .hero__name {
   display: block;
   font-family: var(--f-display);
-  font-weight: 300;
+  font-weight: 650;
   font-size: var(--t-display);
-  line-height: 0.9;
-  letter-spacing: -0.035em;
-  font-variation-settings: "SOFT" 100, "opsz" 144;
+  line-height: 0.94;
+  letter-spacing: -0.04em;
 }
 .hero__accent-wrap {
   display: flex;
@@ -1014,19 +1013,18 @@ p {
 }
 .hero__accent {
   display: block;
-  font-family: var(--f-display);
+  font-family: var(--f-serif);
   font-style: italic;
-  font-weight: 350;
+  font-weight: 400;
   font-size: clamp(2.75rem, 1.4rem + 5.6vw, 7rem);
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.01em;
   color: var(--c-accent);
-  font-variation-settings: "SOFT" 100, "opsz" 144;
 }
 .hero__foot {
   font-size: var(--t-eyebrow);
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   color: var(--text-muted);
   text-transform: uppercase;
 }
@@ -1139,18 +1137,17 @@ p {
   position: relative;
   margin: 0;
   font-family: var(--f-display);
-  font-weight: 350;
+  font-weight: 500;
   font-size: clamp(1.75rem, 1.15rem + 2.4vw, 3.4rem);
   line-height: 1.12;
-  letter-spacing: -0.018em;
-  font-variation-settings: "SOFT" 80, "opsz" 72;
+  letter-spacing: -0.03em;
   max-width: 26ch;
 }
 .spec__title {
   margin: 0 0 0.75rem;
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   color: var(--text-accent);
 }
 .spec__list {
@@ -1167,7 +1164,7 @@ p {
 .spec__row dt {
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-accent);
 }
@@ -1218,7 +1215,7 @@ p {
 .services__now {
   margin: 1.5rem 0 0;
   font-size: 12px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   color: var(--text-muted);
   display: flex;
   align-items: center;
@@ -1276,17 +1273,16 @@ p {
   padding-top: 0.6rem;
   font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   color: var(--text-accent);
 }
 .track__title {
   grid-area: title;
   font-family: var(--f-display);
-  font-weight: 400;
+  font-weight: 600;
   font-size: var(--t-subheading);
   line-height: 1.05;
-  letter-spacing: -0.015em;
-  font-variation-settings: "SOFT" 60;
+  letter-spacing: -0.03em;
   transition: transform var(--d-base) var(--ease-out);
 }
 .track__line {
@@ -1333,7 +1329,7 @@ p {
 .detail__inc {
   margin: 0 0 0.75rem;
   font-size: 12px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-accent);
 }
@@ -1530,6 +1526,11 @@ p {
 }
 .session__title {
   margin: 0.35rem 0 0.25rem;
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
 }
 .session__sub {
   margin: 0 0 1rem;
@@ -1704,13 +1705,11 @@ html:not(.js-motion) .flip__static-label {
 .bv__title {
   margin: 1.25rem 0 0;
   font-family: var(--f-display);
-  font-style: italic;
-  font-weight: 350;
+  font-weight: 650;
   font-size: var(--t-display);
-  line-height: 0.92;
-  letter-spacing: -0.035em;
+  line-height: 0.94;
+  letter-spacing: -0.04em;
   color: var(--c-brand);
-  font-variation-settings: "SOFT" 100, "opsz" 144;
 }
 .bv__accent {
   margin: clamp(1.5rem, 3vw, 2.25rem) 0 0;
@@ -1817,7 +1816,7 @@ html:not(.js-motion) .flip__static-label {
   left: 12px;
   bottom: 12px;
   font-size: 12px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   color: var(--c-brand);
 }
 .reel__caption {
@@ -1870,7 +1869,7 @@ html:not(.js-motion) .flip__static-label {
   display: block;
   margin-top: 0.5rem;
   font-size: 12px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -1893,15 +1892,16 @@ html:not(.js-motion) .flip__static-label {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-family: var(--f-accent);
-  font-weight: 500;
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
   font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem);
   line-height: 1;
 }
 .tape__cell {
   display: inline-block;
   height: 1.15em;
-  padding: 0.075em 0.12em;
+  padding: 0.075em 0.06em;
   overflow: hidden;
   border-radius: 6px;
   background: var(--c-dark);
@@ -1997,7 +1997,7 @@ html:not(.js-motion) .flip__static-label {
 }
 .direct__label {
   font-size: 12px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   color: var(--text-accent);
 }
 .direct__link {
@@ -2048,7 +2048,7 @@ a.direct__link:hover {
   font-family: var(--f-accent);
   font-weight: 500;
   font-size: 12px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -2257,13 +2257,12 @@ a.direct__link:hover {
 .footer__name {
   margin: 0;
   font-family: var(--f-display);
-  font-weight: 300;
+  font-weight: 650;
   font-size: 15.4vw;
   width: max-content;
-  line-height: 0.86;
-  letter-spacing: -0.035em;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
   white-space: nowrap;
-  font-variation-settings: "SOFT" 100, "opsz" 144;
   color: var(--c-light);
 }
 @media (min-width: 1384px) {
@@ -2426,7 +2425,7 @@ html:has(.sheet) .floating {
 .devpanel .mono {
   margin: 0 0 0.5rem;
   font-size: 11px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   color: var(--c-accent);
 }
 .devpanel--demo {

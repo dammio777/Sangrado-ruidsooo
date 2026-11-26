@@ -354,6 +354,8 @@ export const copy = {
   buenVivir: {
     eyebrow: "CC-002 · LADO B",
     heading: "El buen vivir",
+    /** parte en Instrument Serif itálica (DESIGN v2: solo "Hi-Fi" y "buen vivir") */
+    headingAccent: "buen vivir",
     accent: "Café y bici, sol y monte, diversión y trabajo.",
     lead: "Cristian hace videos sobre crecimiento personal, desarrollo y el buen vivir: lo que aprende, lo que practica y la vida sencilla en la montaña, contado sin filtro.",
     gratitude: "Gracias, papá Dios.",
