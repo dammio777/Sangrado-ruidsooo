@@ -67,7 +67,7 @@ export function Footer() {
     <footer ref={root} className="footer" data-surface="dark" data-nav-surface="brand">
       <div className="container">
         <div className="footer__name-wrap">
-          <p ref={name} className="footer__name" data-reveal="chars" data-start="top 95%" aria-hidden="true">
+          <p ref={name} className="footer__name" data-reveal="lines" data-start="top 95%" aria-hidden="true">
             {person.name}
           </p>
         </div>

@@ -1,8 +1,9 @@
 import { gsap, ScrollTrigger, SplitText } from "./gsap";
 import { MQ, motionOK } from "./env";
+import { distance, dur, gsapEase, stagger } from "./motion";
 
 /**
- * Entradas declarativas: data-reveal="up|lines|chars|clip|circle|draw".
+ * Entradas declarativas: data-reveal="up|lines|clip|circle|draw".
  * data-reveal-group="hero" espera al evento `cc:reveal` (fin del intro).
  * Estados iniciales ocultos solo bajo html.js-motion (CSS).
  */
@@ -10,7 +11,7 @@ export function initReveals() {
   if (!motionOK()) return () => {};
   const mm = gsap.matchMedia();
   mm.add({ isDesktop: "(min-width: 1024px)", isMobile: MQ.isMobile }, (ctx) => {
-    const dist = ctx.conditions?.isDesktop ? 28 : 16;
+    const dist = ctx.conditions?.isDesktop ? distance.desktop : distance.mobile;
     const heroTl = gsap.timeline({ paused: true });
     const els = gsap.utils.toArray<HTMLElement>("[data-reveal]");
 
@@ -31,15 +32,15 @@ export function initReveals() {
             gsap.fromTo(
               el,
               { y: dist, autoAlpha: 0 },
-              { y: 0, autoAlpha: 1, duration: 0.9, ease: "expo.out", delay: d, scrollTrigger: st, clearProps: "transform" },
+              { y: 0, autoAlpha: 1, duration: dur.reveal, ease: gsapEase.outSoft, delay: d, scrollTrigger: st, clearProps: "transform" },
             ),
           );
           break;
         case "clip": {
           const inner = el.querySelector(":scope > *");
           const tl = gsap.timeline({ delay: d, scrollTrigger: st });
-          tl.fromTo(el, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1, ease: "expo.out" });
-          if (inner) tl.fromTo(inner, { scale: 1.12 }, { scale: 1, duration: 1, ease: "expo.out" }, 0);
+          tl.fromTo(el, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: dur.reveal, ease: gsapEase.out });
+          if (inner) tl.fromTo(inner, { scale: 1.12 }, { scale: 1, duration: dur.reveal, ease: gsapEase.out }, 0);
           attach(tl);
           break;
         }
@@ -48,7 +49,7 @@ export function initReveals() {
             gsap.fromTo(
               el,
               { clipPath: "circle(0% at 50% 50%)" },
-              { clipPath: "circle(50% at 50% 50%)", duration: 1.1, ease: "expo.out", delay: d, scrollTrigger: st },
+              { clipPath: "circle(50% at 50% 50%)", duration: dur.reveal, ease: gsapEase.out, delay: d, scrollTrigger: st },
             ),
           );
           break;
@@ -59,28 +60,25 @@ export function initReveals() {
             gsap.fromTo(
               paths,
               { drawSVG: "0%" },
-              { drawSVG: "100%", duration: 1.4, ease: "power2.inOut", stagger: 0.08, delay: d, scrollTrigger: st },
+              { drawSVG: "100%", duration: 1.4, ease: gsapEase.inOut, stagger, delay: d, scrollTrigger: st },
             ),
           );
           break;
         }
-        case "lines":
-        case "chars": {
-          const type = kind === "chars" ? "chars,lines" : "lines";
+        case "lines": {
           SplitText.create(el, {
-            type,
-            mask: kind === "chars" ? "lines" : "lines",
+            type: "lines",
+            mask: "lines",
             autoSplit: true,
             aria: "none",
             linesClass: "split-line",
             onSplit(self) {
               gsap.set(el, { autoAlpha: 1 });
-              const targets = kind === "chars" ? self.chars : self.lines;
-              const tw = gsap.from(targets, {
+              const tw = gsap.from(self.lines, {
                 yPercent: 110,
-                duration: 1,
-                ease: "expo.out",
-                stagger: kind === "chars" ? 0.025 : 0.08,
+                duration: dur.reveal,
+                ease: gsapEase.out,
+                stagger: 0.08,
                 delay: d,
                 scrollTrigger: st,
               });

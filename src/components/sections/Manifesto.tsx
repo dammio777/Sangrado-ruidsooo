@@ -1,8 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap, loadMorph, morph, SplitText } from "../../lib/gsap";
 import { copy } from "../../config/site";
-import { Scramble } from "../ui/Scramble";
-import { VuMeter } from "../brand/VuMeter";
 import { motionOK } from "../../lib/env";
 import { noisyPath, sinePath } from "../../lib/signal";
 
@@ -11,11 +9,10 @@ const H = 200;
 const NOISY = noisyPath(W, H, 80, 140, 9);
 const CLEAN = sinePath(W, H, 4, 54, 140);
 
-/** 04 · Qué es Hi-Fi — `highlight-words` + `noise-to-signal` en el mismo scrub. */
+/** 04 · Qué es Hi-Fi — `highlight-words` + `clarity` en el mismo scrub. */
 export function Manifesto() {
   const para = useRef<HTMLParagraphElement>(null);
   const block = useRef<HTMLDivElement>(null);
-  const grain = useRef<HTMLDivElement>(null);
   const wave = useRef<SVGPathElement>(null);
 
   useEffect(() => {
@@ -42,9 +39,9 @@ export function Manifesto() {
       const tl = gsap.timeline({
         scrollTrigger: { trigger: para.current, start: "top 75%", end: "bottom 45%", scrub: true },
       });
-      tl.fromTo(grain.current, { opacity: 0.5 }, { opacity: 0, ease: "none" }, 0);
+      // `clarity`: la onda pasa de ruidosa a limpia mientras el párrafo se ilumina
       void loadMorph().then(() => {
-        tl.fromTo(wave.current, morph(NOISY), { ...morph(CLEAN), ease: "none" }, 0);
+        tl.fromTo(wave.current, { ...morph(NOISY), opacity: 0.4 }, { ...morph(CLEAN), opacity: 1, ease: "none" }, 0);
       });
       return () => split.revert();
     }, block);
@@ -55,7 +52,9 @@ export function Manifesto() {
     <section id="hifi" className="manifesto section" data-surface="dark" data-nav-surface="brand" aria-labelledby="hifi-title">
       <div className="container manifesto__grid">
         <div ref={block} className="manifesto__main">
-          <Scramble text={copy.manifesto.eyebrow} className="eyebrow" />
+          <p className="eyebrow" data-reveal="up">
+            {copy.manifesto.eyebrow}
+          </p>
           <h2 id="hifi-title" className="sr-only" data-focus-target>
             {copy.manifesto.heading}
           </h2>
@@ -64,7 +63,6 @@ export function Manifesto() {
               <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none">
                 <path ref={wave} d={CLEAN} />
               </svg>
-              <div ref={grain} className="manifesto__grain" />
             </div>
             <p ref={para} className="manifesto__text" data-pending="Manifiesto [AJUSTAR]">
               {copy.manifesto.body}
@@ -85,10 +83,6 @@ export function Manifesto() {
               ))}
             </dl>
           </div>
-          <figure className="manifesto__vu" data-reveal="up" data-delay="0.2">
-            <VuMeter label="VU" />
-            <figcaption className="mono">{copy.manifesto.vuLabel}</figcaption>
-          </figure>
         </aside>
       </div>
     </section>

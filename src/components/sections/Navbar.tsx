@@ -5,6 +5,7 @@ import { copy, nav, person } from "../../config/site";
 import { useUI } from "../../lib/store";
 import { scrollToId } from "../../lib/scroll";
 import { addTick } from "../../lib/ticker";
+import { createSpin } from "../../lib/spin";
 import { live } from "../../lib/live";
 import { motionOK } from "../../lib/env";
 import { useFocusTrap, useScrollLock } from "../../lib/a11y";
@@ -30,17 +31,17 @@ export function Navbar() {
   useFocusTrap(menu, open, closeMenu);
   useScrollLock(open);
 
-  // marca: gira con la velocidad de scroll (hacia atrás al subir) + anillo de progreso
+  // marca: `record-spin` (24 s/vuelta, empuje ≤ ×2) + anillo de progreso
   useEffect(() => {
     const disc = mark.current?.querySelector<SVGSVGElement>(".record__disc");
-    let angle = 0;
-    const off = addTick((_t, dt) => {
+    const spinner = disc && motionOK() ? createSpin(disc) : null;
+    const off = addTick(() => {
       if (ring.current) ring.current.style.strokeDashoffset = String(RING * (1 - live.progress));
-      if (!disc || !motionOK()) return;
-      angle += live.velocity * dt * 0.12;
-      disc.style.transform = `rotate(${angle.toFixed(2)}deg)`;
     });
-    return off;
+    return () => {
+      off();
+      spinner?.destroy();
+    };
   }, []);
 
   // superficie bajo la barra + sección activa + ocultar en scroll rápido hacia abajo

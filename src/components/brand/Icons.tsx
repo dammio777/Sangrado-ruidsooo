@@ -49,9 +49,9 @@ export const IconArrowUpRight = ({ size = 18, ...p }: P) => (
     <path d="M7 17L17 7M8 7h9v9" />
   </svg>
 );
-export const IconCaret = ({ size = 18, dir = "down", ...p }: P & { dir?: "up" | "down" }) => (
+export const IconCaret = ({ size = 18, dir = "down", ...p }: P & { dir?: "up" | "down" | "left" | "right" }) => (
   <svg {...base(size, p)}>
-    <path d={dir === "down" ? "M6 9l6 6 6-6" : "M6 15l6-6 6 6"} />
+    <path d={{ down: "M6 9l6 6 6-6", up: "M6 15l6-6 6 6", left: "M15 6l-6 6 6 6", right: "M9 6l6 6-6 6" }[dir]} />
   </svg>
 );
 export const IconX = ({ size = 20, ...p }: P) => (

@@ -1,0 +1,31 @@
+// INP de laboratorio: CPU ×4, interacciones reales; reporta la peor latencia por interacción.
+import { createRequire } from "node:module";
+const { chromium } = createRequire(import.meta.url)("playwright");
+const URL = process.env.URL || "http://localhost:4174/";
+const b = await chromium.launch();
+const ctx = await b.newContext({ viewport: { width: 412, height: 823 }, isMobile: true, hasTouch: true });
+const p = await ctx.newPage();
+const cdp = await ctx.newCDPSession(p);
+await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
+await p.addInitScript(() => {
+  window.__inp = {};
+  new PerformanceObserver((l) => l.getEntries().forEach((e) => { if (e.interactionId) window.__inp[e.interactionId] = Math.max(window.__inp[e.interactionId] || 0, e.duration); })).observe({ type: "event", durationThreshold: 16, buffered: true });
+});
+await p.goto(URL + "#lo-que-hace", { waitUntil: "networkidle" });
+await p.waitForTimeout(2500);
+const step = async (fn) => { await fn(); await p.waitForTimeout(700); };
+await step(() => p.tap(".track >> nth=0"));
+await step(() => p.keyboard.press("Escape"));
+await step(() => p.tap(".nav__burger"));
+await step(() => p.tap(".nav__burger"));
+await p.evaluate(() => document.getElementById("contacto").scrollIntoView());
+await p.waitForTimeout(1200);
+await step(() => p.tap('input[name="nombre"]'));
+await step(() => p.keyboard.type("Ana", { delay: 60 }));
+await step(() => p.tap(".chip >> nth=1"));
+await p.evaluate(() => window.scrollBy(0, -300));
+await p.waitForTimeout(800);
+await step(() => p.tap(".nav [data-sound-toggle]"));
+const vals = Object.values(await p.evaluate(() => window.__inp)).sort((a, b) => b - a);
+console.log(`INP (peor interacción, CPU ×4): ${Math.round(vals[0] ?? 0)} ms · interacciones medidas: ${vals.length} · top3: ${vals.slice(0, 3).map(Math.round).join(", ")}`);
+await b.close();

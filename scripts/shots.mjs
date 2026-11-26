@@ -1,7 +1,7 @@
 // Capturas por sección en 375/768/1440 + chequeo de overflow a 320 y errores de consola.
 import { createRequire } from "node:module";
 const { chromium } = createRequire(import.meta.url)("playwright");
-const URL = process.env.URL || "http://localhost:4173/";
+const URL = process.env.URL || "http://localhost:4174/";
 const OUT = process.env.OUT || "verify-out";
 const only = process.argv[2];
 const sizes = [
@@ -17,8 +17,11 @@ for (const [w, h] of sizes) {
   const page = await ctx.newPage();
   page.on("console", (m) => (m.type() === "error" || m.type() === "warning") && errors.push(`[${w}] ${m.type()}: ${m.text()}`));
   page.on("pageerror", (e) => errors.push(`[${w}] pageerror: ${e.message}`));
-  await page.goto(URL, { waitUntil: "networkidle" });
-  await page.waitForTimeout(2600); // intro
+  await page.goto(URL, { waitUntil: "commit" });
+  await page.waitForTimeout(700); // intro a mitad
+  await page.screenshot({ path: `${OUT}/${w}-00-intro-mid.png` });
+  await page.waitForLoadState("networkidle");
+  await page.waitForTimeout(1800); // intro
   await page.screenshot({ path: `${OUT}/${w}-00-hero.png` });
   const ids = ["hifi", "lo-que-hace", "sesiones", "buen-vivir", "contacto"];
   const total = await page.evaluate(() => document.documentElement.scrollHeight);
@@ -36,13 +39,13 @@ for (const [w, h] of sizes) {
     await page.waitForTimeout(1300);
     await page.screenshot({ path: `${OUT}/${w}-0${n++}-${id}.png` });
   }
-  // marquesina
+  // transición crema → vino al entrar a contacto
   await page.evaluate(() => {
-    const el = document.querySelector(".marquee");
-    window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - 200);
+    const el = document.getElementById("contacto");
+    window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - innerHeight * 0.6);
   });
-  await page.waitForTimeout(900);
-  await page.screenshot({ path: `${OUT}/${w}-06-marquee.png` });
+  await page.waitForTimeout(1200);
+  await page.screenshot({ path: `${OUT}/${w}-06-contacto-transicion.png` });
   // flip a mitad
   for (const [k, f] of [["a", 0.25], ["mid", 0.5], ["c", 0.8]]) {
     await page.evaluate((ff) => {

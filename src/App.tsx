@@ -7,7 +7,6 @@ import { restoreSound } from "./lib/sound";
 import { live } from "./lib/live";
 import { Navbar } from "./components/sections/Navbar";
 import { Hero } from "./components/sections/Hero";
-import { MarqueeSection } from "./components/sections/MarqueeSection";
 import { Manifesto } from "./components/sections/Manifesto";
 import { Services } from "./components/sections/Services";
 import { Sessions } from "./components/sections/Sessions";
@@ -15,11 +14,9 @@ import { FlipSection } from "./components/sections/FlipSection";
 import { BuenVivir } from "./components/sections/BuenVivir";
 import { Contact } from "./components/sections/Contact";
 import { Footer } from "./components/sections/Footer";
-import { TonearmProgress } from "./components/sections/TonearmProgress";
 import { Floating } from "./components/sections/Floating";
 import { Intro } from "./components/sections/Intro";
 import { Toast } from "./components/ui/Toast";
-import { Cursor } from "./components/ui/Cursor";
 
 const loadFeatures = () => import("./components/ui/motion-features").then((r) => r.default);
 const Overlays = lazy(() => import("./components/sections/Overlays"));
@@ -67,10 +64,8 @@ export function App() {
       <div className="mood mood--brand" aria-hidden="true" />
       <div className="mood mood--light" aria-hidden="true" />
       <Navbar />
-      <TonearmProgress />
       <main id="main" tabIndex={-1}>
         <Hero />
-        <MarqueeSection />
         <Manifesto />
         <Services />
         <Sessions />
@@ -81,7 +76,6 @@ export function App() {
       <Footer />
       <Floating />
       <Toast />
-      <Cursor />
       <Intro />
       <div className="grain" aria-hidden="true" />
       {dev && (

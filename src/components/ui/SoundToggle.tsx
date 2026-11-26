@@ -1,7 +1,6 @@
 import { useUI } from "../../lib/store";
 import { setSound } from "../../lib/sound";
 import { copy } from "../../config/site";
-import { EqBars } from "../brand/EqBars";
 
 export function SoundToggle({ className = "" }: { className?: string }) {
   const on = useUI((s) => s.soundOn);
@@ -21,7 +20,6 @@ export function SoundToggle({ className = "" }: { className?: string }) {
       <span className="sound__label mono" aria-hidden="true">
         {copy.sound.label}
       </span>
-      <EqBars count={4} active={on} className="sound__eq" />
     </button>
   );
 }

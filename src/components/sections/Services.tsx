@@ -3,66 +3,58 @@ import { gsap } from "../../lib/gsap";
 import { copy, services } from "../../config/site";
 import { useUI } from "../../lib/store";
 import { Record } from "../brand/Record";
-import { Tonearm } from "../brand/Tonearm";
 import { MiniWaveform } from "../brand/Waveform";
 import { Button } from "../ui/Button";
 import { IconArrowRight, IconWhatsApp } from "../brand/Icons";
 import { createSpin } from "../../lib/spin";
 import { motionOK } from "../../lib/env";
+import { dur, gsapEase } from "../../lib/motion";
 import { tick } from "../../lib/sound";
 import { waLink } from "../../lib/whatsapp";
 
 const Sheet = lazy(() => import("../ui/Sheet"));
 const preloadSheet = () => void import("../ui/Sheet");
 
-/** 05 · Lo que hace — tracklist A1–A5 con disco sticky (CSS) y brazo que busca el surco. */
+/** 05 · Lo que hace — tracklist A1–A5 con disco sticky (CSS). */
 export function Services() {
   const sheetId = useUI((s) => s.sheet);
   const openSheet = useUI((s) => s.openSheet);
   const closeSheet = useUI((s) => s.closeSheet);
   const [active, setActive] = useState(0);
   const recWrap = useRef<HTMLDivElement>(null);
-  const label = useRef<SVGGElement | null>(null);
-  const arm = useRef<SVGGElement>(null);
   const center = useRef<SVGTextElement | null>(null);
 
   useEffect(() => {
     const wrap = recWrap.current;
     if (!wrap) return;
-    label.current = wrap.querySelector<SVGGElement>(".record__label");
     center.current = wrap.querySelector<SVGTextElement>(".record__center");
-    gsap.set(arm.current, { svgOrigin: "96 36", rotation: -24 });
-    if (!motionOK()) {
-      gsap.set(arm.current, { rotation: -15 });
-      return;
-    }
+    if (!motionOK()) return;
     const disc = wrap.querySelector<SVGSVGElement>(".record__disc")!;
     const spinner = createSpin(disc, { watch: wrap });
-    const armIn = gsap.to(arm.current, {
-      rotation: -15,
-      duration: 1.1,
-      ease: "power3.inOut",
-      scrollTrigger: { trigger: wrap, start: "top 70%", once: true },
-    });
-    return () => {
-      spinner.destroy();
-      armIn.kill();
-    };
+    return () => spinner.destroy();
   }, []);
 
-  // pista activa → el label gira para mostrar el número y el brazo va a ese surco
+  // tema activo → el número del label cambia con `fade-through`
   const first = useRef(true);
   useEffect(() => {
-    if (center.current) center.current.textContent = services[active]!.id;
-    if (first.current) {
+    const el = center.current;
+    if (!el) return;
+    const id = services[active]!.id;
+    if (first.current || !motionOK()) {
       first.current = false;
+      el.textContent = id;
       return;
     }
-    if (!motionOK()) return;
-    gsap.to(arm.current, { rotation: -15 + (active / (services.length - 1)) * 15, duration: 0.6, ease: "power3.inOut", overwrite: "auto" });
-    if (label.current) {
-      gsap.fromTo(label.current, { scale: 0.94 }, { scale: 1, duration: 0.5, ease: "expo.out", svgOrigin: "200 200", overwrite: "auto" });
-    }
+    const tl = gsap
+      .timeline()
+      .to(el, { opacity: 0, duration: dur.fast, ease: gsapEase.inOut })
+      .call(() => void (el.textContent = id))
+      .to(el, { opacity: 1, duration: dur.base, ease: gsapEase.outSoft });
+    return () => {
+      tl.kill();
+      el.textContent = id;
+      el.style.opacity = "";
+    };
   }, [active]);
 
   const activate = (i: number) => {
@@ -98,7 +90,6 @@ export function Services() {
             <div className="services__sticky">
               <div ref={recWrap} className="services__record">
                 <Record ring="LADO A · LO QUE HACE · CINCO TEMAS · HI-FI · " center="A1" sheen={false} grooveCount={22} />
-                <Tonearm ref={arm} className="services__arm" />
               </div>
               <p className="mono services__now">
                 <span className="services__now-dot" /> {services[active]!.id} · {services[active]!.title.toUpperCase()}

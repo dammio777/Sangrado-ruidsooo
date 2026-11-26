@@ -53,17 +53,20 @@ const b = await chromium.launch();
   await p.waitForTimeout(700);
   ok("Hoja: Esc cierra y el foco vuelve al tema", await p.evaluate(() => !document.querySelector(".sheet__panel") && document.activeElement?.classList.contains("track")));
 
-  // caja: flechas + Enter
+  // riel de sesiones: botones y teclado nativo (sin preventDefault)
   await p.evaluate(() => document.getElementById("sesiones").scrollIntoView());
   await p.waitForTimeout(1500);
-  await p.focus(".sleeve.is-active");
-  await p.keyboard.press("ArrowDown");
-  await p.waitForTimeout(400);
-  const crate = await p.evaluate(() => [document.querySelector(".crate__count").textContent, document.activeElement?.getAttribute("aria-label")?.slice(0, 40)]);
-  ok("Caja: ↓ avanza y mueve el foco", crate[0].trim().startsWith("02"), JSON.stringify(crate));
-  await p.keyboard.press("Enter");
-  await p.waitForTimeout(400);
-  ok("Caja: Enter saca el disco (aria-pressed)", (await p.evaluate(() => document.activeElement?.getAttribute("aria-pressed"))) === "true");
+  await p.focus(".rail");
+  const x0 = await p.evaluate(() => document.querySelector(".rail").scrollLeft);
+  await p.keyboard.press("ArrowRight");
+  await p.waitForTimeout(900);
+  const x1 = await p.evaluate(() => document.querySelector(".rail").scrollLeft);
+  await p.evaluate(() => document.querySelector(".rail").scrollTo({ left: 0 }));
+  await p.waitForTimeout(500);
+  await p.click('.rail-controls button[aria-label="Sesión siguiente"]');
+  await p.waitForTimeout(1500);
+  const count = (await p.textContent(".rail-count")).trim();
+  ok("Riel: botón 'siguiente' avanza y ←/→ desplazan de forma nativa con foco", count.startsWith("02") && x1 > x0, JSON.stringify([count, x0, x1]));
 
   // menú: no visible en escritorio; nav con teclado
   await p.focus('.nav__links a[href="#contacto"]');
@@ -115,7 +118,7 @@ const b = await chromium.launch();
   const p = await ctx.newPage();
   await p.goto(URL + "#sesiones", { waitUntil: "networkidle" });
   await p.waitForTimeout(1500);
-  for (const sel of [".crate__stage", ".flip__stage"]) {
+  for (const sel of [".rail", ".flip__stage"]) {
     await p.evaluate((s) => document.querySelector(s).scrollIntoView({ block: "center" }), sel);
     await p.waitForTimeout(800);
     const box = await p.locator(sel).boundingBox();
@@ -131,9 +134,25 @@ const b = await chromium.launch();
   const m = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   const mp = await m.newPage();
   await mp.goto(URL + "#sesiones", { waitUntil: "networkidle" });
-  await mp.waitForTimeout(1200);
-  const prevented = await mp.evaluate(() => { const r = []; for (const sel of [".crate__stage", ".flip__stage", ".hero__record", ".reels__list"]) for (const t of ["wheel", "touchstart", "touchmove", "keydown"]) { const e = new Event(t, { cancelable: true, bubbles: true }); document.querySelector(sel).dispatchEvent(e); if (e.defaultPrevented) r.push(sel + ":" + t); } return r; });
-  ok("Móvil: ningún preventDefault en wheel/touch/keydown (caja, flip, hero, reels)", prevented.length === 0, prevented.join(","));
+  await mp.waitForTimeout(400);
+  const rb = await mp.locator(".rail").boundingBox();
+  const cdp = await m.newCDPSession(mp);
+  const drag = async (x0, y0, x1, y1) => {
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: x0, y: y0 }] });
+    for (let i = 1; i <= 12; i++) { await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: x0 + ((x1 - x0) * i) / 12, y: y0 + ((y1 - y0) * i) / 12 }] }); await mp.waitForTimeout(16); }
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    await mp.waitForTimeout(700);
+  };
+  const ty = Math.round(rb.y + 150);
+  const railX0 = await mp.evaluate(() => document.querySelector(".rail").scrollLeft);
+  await drag(300, ty, 60, ty);
+  const railX1 = await mp.evaluate(() => document.querySelector(".rail").scrollLeft);
+  const pageY0 = await mp.evaluate(() => scrollY);
+  await drag(200, ty + 100, 200, ty - 200);
+  const pageY = (await mp.evaluate(() => scrollY)) - pageY0;
+  ok("Táctil: el riel se desliza en horizontal y el gesto vertical sobre él mueve la página", railX1 > railX0 && pageY > 0, JSON.stringify([railX0, railX1, pageY]));
+  const prevented = await mp.evaluate(() => { const r = []; for (const sel of [".rail", ".flip__stage", ".hero__record", ".reels__list"]) for (const t of ["wheel", "touchstart", "touchmove", "keydown"]) { const e = new Event(t, { cancelable: true, bubbles: true }); document.querySelector(sel).dispatchEvent(e); if (e.defaultPrevented) r.push(sel + ":" + t); } return r; });
+  ok("Móvil: ningún preventDefault en wheel/touch/keydown (riel, transición, hero, reels)", prevented.length === 0, prevented.join(","));
   await m.close();
 }
 
@@ -148,6 +167,8 @@ for (const [name, opts] of [["reduced motion", { reducedMotion: "reduce" }], ["s
     document.querySelectorAll("main h1, main h2, main h3, main p, main li, main a, main button, footer p").forEach((el) => {
       const cs = getComputedStyle(el);
       if (el.closest(".sr-only,[aria-hidden=true]")) return;
+      // ocultos a propósito: pista del riel en móvil y leyenda animada sustituida por la etiqueta estática
+      if (el.matches(".rail-hint, .flip__caption")) return;
       if (cs.visibility === "hidden" || cs.opacity === "0" || cs.display === "none") out.push(el.tagName + "." + el.className);
     });
     return out;

@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "../../lib/gsap";
 import { copy, person, pillars, reels } from "../../config/site";
-import { Scramble } from "../ui/Scramble";
 import { Button } from "../ui/Button";
 import { SiteImg } from "../brand/Placeholder";
 import { IconArrowUpRight, IconInstagram, IconPlay, IconShare, PillarIcon } from "../brand/Icons";
@@ -119,7 +118,9 @@ export function BuenVivir() {
       <div className="container">
         <header className="bv__head">
           <div ref={sun} className="bv__sun" aria-hidden="true" />
-          <Scramble text={copy.buenVivir.eyebrow} className="eyebrow" />
+          <p className="eyebrow" data-reveal="up">
+            {copy.buenVivir.eyebrow}
+          </p>
           <h2 id="bv-title" className="bv__title" data-reveal="lines" data-focus-target>
             {copy.buenVivir.heading}
           </h2>
@@ -179,7 +180,7 @@ export function BuenVivir() {
             <h3 className="heading ig__title">{copy.buenVivir.igHeading}</h3>
             <a className="ig__handle mono" href={person.instagram.url} target="_blank" rel="noopener">
               <IconInstagram size={18} />
-              <Scramble text={person.instagram.handle} trigger="hover" />
+              <span>{person.instagram.handle}</span>
             </a>
           </div>
           <div className="ig__count" data-pending="Seguidores [ACTUALIZAR]">
@@ -187,7 +188,7 @@ export function BuenVivir() {
             <span className="mono ig__count-label">{copy.buenVivir.followers}</span>
           </div>
           <div className="ig__ctas">
-            <Button href={person.instagram.url} external magnetic icon={<IconArrowUpRight />}>
+            <Button href={person.instagram.url} external icon={<IconArrowUpRight />}>
               {copy.buenVivir.igButton}
             </Button>
             <Button variant="secondary" onClick={() => void share()} icon={<IconShare />}>

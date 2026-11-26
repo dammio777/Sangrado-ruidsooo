@@ -1,181 +1,75 @@
-import { useEffect, useRef, useState, type ComponentType, type KeyboardEvent, type MouseEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import { copy, sessions, type Session } from "../../config/site";
 import { dayMonth, isUpcoming, time12, weekdayDayMonth } from "../../lib/format";
-import { Record } from "../brand/Record";
+import { SiteImg } from "../brand/Placeholder";
 import { Button } from "../ui/Button";
 import { IconArrowRight, IconCaret } from "../brand/Icons";
-import { matches, MQ, motionOK } from "../../lib/env";
-import { createSpin, type Spinner } from "../../lib/spin";
+import { matches, MQ } from "../../lib/env";
 import { scrollToId } from "../../lib/scroll";
-import { tick } from "../../lib/sound";
-import { poseStyle, type CrateListProps } from "./crate/pose";
-import { watchVisible } from "../../lib/ticker";
 
 const N = sessions.length;
 
 function status(s: Session, now: number) {
   if (!s.date) return { upcoming: false, text: copy.sessions.noDate };
   if (isUpcoming(s.date, now)) return { upcoming: true, text: copy.sessions.upcoming };
-  return { upcoming: false, text: `${copy.sessions.played} ${dayMonth(s.date).toUpperCase()}` };
+  return { upcoming: false, text: `${copy.sessions.played} ${dayMonth(s.date)}` };
 }
 
-function catalogLine(s: Session) {
-  const date = s.date ? dayMonth(s.date).toUpperCase() : "FECHA [CONFIRMAR]";
-  return `${s.catalog} · ${date} · ${s.venue.split(" · ")[0]!.toUpperCase()}`;
-}
-
-function fullLabel(s: Session, now: number) {
-  const parts = [s.title, s.subtitle, s.venue];
-  if (s.date) parts.push(weekdayDayMonth(s.date));
-  if (s.time) parts.push(time12(s.time));
-  parts.push(status(s, now).text.toLowerCase());
-  return parts.join(", ");
-}
-
-/** Versión estática (SSR / móvil / antes de cargar la interacción). */
-function CrateStatic({ count, active, pulled, renderSlot, label, onKeyDown }: CrateListProps) {
-  return (
-    <div className="crate__stage crate__stage--static" data-cursor="view">
-      <ol className="crate__list" aria-label={label} onKeyDown={onKeyDown}>
-        {Array.from({ length: count }, (_, i) => (
-          <li key={i} className={`crate__slot ${pulled === i ? "is-pulled" : ""}`} style={poseStyle(i - active, pulled === i)}>
-            {renderSlot(i)}
-          </li>
-        ))}
-      </ol>
-    </div>
-  );
-}
-
-const loadCrate = () => import("./crate/CrateMotion");
-
+/**
+ * 06 · Sesiones — riel horizontal con scroll nativo (sin capturar la rueda ni teclas).
+ * Flechas = botones; con foco en el riel, ←/→ desplazan de forma nativa.
+ */
 export function Sessions() {
   const [active, setActive] = useState(0);
-  const [pulled, setPulled] = useState<number | null>(null);
+  const [edge, setEdge] = useState({ start: true, end: false });
   const [now, setNow] = useState<number>(__BUILD_TIME__);
-  const [Interactive, setInteractive] = useState<ComponentType<CrateListProps> | null>(null);
-  const sectionRef = useRef<HTMLElement>(null);
-  const buttons = useRef<(HTMLButtonElement | null)[]>([]);
-  const vinyl = useRef<(HTMLDivElement | null)[]>([]);
-  const spin = useRef<Spinner | null>(null);
+  const rail = useRef<HTMLOListElement>(null);
 
   useEffect(() => setNow(Date.now()), []);
 
-  // la interacción (Motion drag) se carga solo en escritorio y cerca de la sección
+  // tarjeta activa = la primera visible dentro del riel
   useEffect(() => {
-    if (!sectionRef.current || !matches(MQ.isDesktop)) return;
-    let off = () => {};
-    off = watchVisible(
-      sectionRef.current,
-      (v) => {
-        if (!v) return;
-        off();
-        void loadCrate().then((m) => setInteractive(() => m.default));
+    const el = rail.current;
+    if (!el) return;
+    const visible = new Set<number>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          const i = Number((e.target as HTMLElement).dataset.i);
+          if (e.isIntersecting) visible.add(i);
+          else visible.delete(i);
+        });
+        if (visible.size) setActive(Math.min(...visible));
       },
-      "900px 0px",
+      { root: el, threshold: 0.6 },
     );
-    return () => off();
+    el.querySelectorAll("li").forEach((li) => io.observe(li));
+    // extremos: primera / última tarjeta completamente visibles → deshabilitar flechas
+    const ends = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          const key = e.target === el.firstElementChild ? "start" : "end";
+          setEdge((prev) => ({ ...prev, [key]: e.intersectionRatio > 0.97 }));
+        }),
+      { root: el, threshold: [0.97, 1] },
+    );
+    if (el.firstElementChild) ends.observe(el.firstElementChild);
+    if (el.lastElementChild) ends.observe(el.lastElementChild);
+    return () => {
+      io.disconnect();
+      ends.disconnect();
+    };
   }, []);
 
-  const goTo = (i: number, focus = false) => {
-    const t = Math.max(0, Math.min(N - 1, i));
-    setActive(t);
-    if (pulled !== null && pulled !== t) setPulled(null);
-    if (t !== active) tick(1 + t * 0.06);
-    if (focus) buttons.current[t]?.focus({ preventScroll: true });
-    // móvil: carrusel nativo
-    if (matches(MQ.isMobile)) buttons.current[t]?.closest("li")?.scrollIntoView({ inline: "center", block: "nearest", behavior: motionOK() ? "smooth" : "auto" });
+  const go = (i: number) => {
+    const el = rail.current;
+    const card = el?.children[Math.max(0, Math.min(N - 1, i))] as HTMLElement | undefined;
+    if (!el || !card) return;
+    el.scrollTo({ left: card.offsetLeft - el.offsetLeft - parseFloat(getComputedStyle(el).paddingLeft), behavior: matches(MQ.reduceMotion) ? "auto" : "smooth" });
   };
-
-  // `sleeve-pull`: el vinilo sale y gira
-  useEffect(() => {
-    spin.current?.destroy();
-    spin.current = null;
-    if (pulled === null) return;
-    const disc = vinyl.current[pulled]?.querySelector<SVGSVGElement>(".record__disc");
-    if (disc && motionOK()) spin.current = createSpin(disc, { boost: false });
-    return () => {
-      spin.current?.destroy();
-      spin.current = null;
-    };
-  }, [pulled]);
-
-  const onKey = (e: KeyboardEvent) => {
-    if (["ArrowDown", "ArrowRight"].includes(e.key)) {
-      e.preventDefault();
-      goTo(active + 1, true);
-    } else if (["ArrowUp", "ArrowLeft"].includes(e.key)) {
-      e.preventDefault();
-      goTo(active - 1, true);
-    } else if (e.key === "Home") {
-      e.preventDefault();
-      goTo(0, true);
-    } else if (e.key === "End") {
-      e.preventDefault();
-      goTo(N - 1, true);
-    } else if (e.key === "Escape" && pulled !== null) {
-      setPulled(null);
-    }
-  };
-
-  const onSleeve = (i: number) => (e: MouseEvent) => {
-    e.preventDefault();
-    if (i !== active) {
-      goTo(i);
-      return;
-    }
-    setPulled(pulled === i ? null : i);
-    tick(0.7);
-  };
-
-  const renderSlot = (i: number) => {
-    const s = sessions[i]!;
-    const stt = status(s, now);
-    return (
-      <>
-        <div ref={(n) => void (vinyl.current[i] = n)} className="crate__vinyl" aria-hidden="true">
-          <Record ring={null} center="CC" sheen={false} grooveCount={14} />
-        </div>
-        <button
-          ref={(n) => void (buttons.current[i] = n)}
-          type="button"
-          className={`sleeve sleeve--${i % 3} ${i === active ? "is-active" : ""}`}
-          tabIndex={i === active ? 0 : -1}
-          aria-pressed={pulled === i}
-          aria-label={`${fullLabel(s, now)}. ${pulled === i ? copy.sessions.putBack : copy.sessions.pull}`}
-          onClick={onSleeve(i)}
-          data-pending={s.pending.join(" · ")}
-        >
-          <span className="sleeve__art" aria-hidden="true">
-            <span className="sleeve__disc" />
-            <span className="sleeve__kicker mono">{s.presenter ?? s.venue}</span>
-            <span className="sleeve__title">{s.title}</span>
-            <span className="sleeve__sub">{s.subtitle}</span>
-            <span className="sleeve__soon mono">{copy.sessions.posterSoon}</span>
-            <span className={`sleeve__stamp mono ${stt.upcoming ? "is-upcoming" : ""}`}>{stt.text}</span>
-          </span>
-          <span className="sleeve__strip mono" aria-hidden="true">
-            {catalogLine(s)}
-          </span>
-        </button>
-      </>
-    );
-  };
-  const listProps: CrateListProps = {
-    count: N,
-    active,
-    pulled,
-    renderSlot,
-    onSettle: (i) => goTo(i),
-    label: copy.sessions.heading,
-    onKeyDown: onKey,
-  };
-
-  const sel = sessions[pulled ?? active]!;
-  const st = status(sel, now);
 
   return (
-    <section ref={sectionRef} id="sesiones" className="sessions section" data-surface="dark" data-nav-surface="brand" aria-labelledby="sessions-title">
+    <section id="sesiones" className="sessions section" data-surface="dark" data-nav-surface="brand" aria-labelledby="sessions-title">
       <div className="container">
         <header className="section-head">
           <h2 id="sessions-title" className="heading" data-reveal="lines" data-focus-target>
@@ -186,70 +80,70 @@ export function Sessions() {
           </p>
         </header>
 
-        <div className="crate" data-reveal="up" data-delay="0.15">
-          <div className="crate__box">
-            <span className="eyebrow crate__eyebrow">{copy.sessions.label}</span>
-            {Interactive ? <Interactive {...listProps} /> : <CrateStatic {...listProps} />}
-            <div className="crate__controls">
-              <button type="button" className="icon-btn icon-btn--line" onClick={() => goTo(active - 1, false)} disabled={active === 0} aria-label={copy.sessions.prev}>
-                <IconCaret dir="up" />
-              </button>
-              <span className="mono crate__count" aria-live="polite">
-                {String(active + 1).padStart(2, "0")} / {String(N).padStart(2, "0")}
-              </span>
-              <button type="button" className="icon-btn icon-btn--line" onClick={() => goTo(active + 1, false)} disabled={active === N - 1} aria-label={copy.sessions.next}>
-                <IconCaret dir="down" />
-              </button>
-              <span className="mono crate__hint">{copy.sessions.hint}</span>
-            </div>
-          </div>
-
-          <div className={`crate__detail ${pulled !== null ? "is-pulled" : ""}`} aria-live="polite">
-            <p className="mono crate__detail-cat">
-              {sel.catalog} · {pulled !== null ? "AFUERA DE LA FUNDA" : "EN LA CAJA"}
-            </p>
-            <h3 className="subheading crate__detail-title">{sel.title}</h3>
-            <p className="crate__detail-sub">{sel.subtitle}</p>
-            <dl className="crate__meta mono">
-              <div>
-                <dt>LUGAR</dt>
-                <dd>{sel.venue}</dd>
-              </div>
-              {sel.presenter && (
-                <div>
-                  <dt>PRESENTA</dt>
-                  <dd>{sel.presenter}</dd>
-                </div>
-              )}
-              <div>
-                <dt>FECHA</dt>
-                <dd>
-                  {sel.date ? weekdayDayMonth(sel.date) : copy.sessions.noDate}
-                  {sel.time ? ` · ${time12(sel.time)}` : ""}
-                </dd>
-              </div>
-              {sel.address && (
-                <div>
-                  <dt>DÓNDE</dt>
-                  <dd>{sel.address}</dd>
-                </div>
-              )}
-              {sel.genres.length > 0 && (
-                <div>
-                  <dt>SUENA</dt>
-                  <dd>{sel.genres.join(" · ")}</dd>
-                </div>
-              )}
-              <div>
-                <dt>ESTADO</dt>
-                <dd className={st.upcoming ? "is-upcoming" : ""}>{st.text}</dd>
-              </div>
-            </dl>
-            <button type="button" className="crate__pull mono" onClick={() => setPulled(pulled === null ? active : null)}>
-              {pulled !== null ? copy.sessions.putBack : copy.sessions.pull} ↑
+        <div className="rail-head">
+          <p className="eyebrow">{copy.sessions.label}</p>
+          <div className="rail-controls">
+            <span className="rail-count" aria-hidden="true">
+              {String(active + 1).padStart(2, "0")} / {String(N).padStart(2, "0")}
+            </span>
+            <button type="button" className="icon-btn icon-btn--line" onClick={() => go(active - 1)} disabled={edge.start} aria-label={copy.sessions.prev} aria-controls="sessions-rail">
+              <IconCaret dir="left" />
+            </button>
+            <button type="button" className="icon-btn icon-btn--line" onClick={() => go(active + 1)} disabled={edge.end} aria-label={copy.sessions.next} aria-controls="sessions-rail">
+              <IconCaret dir="right" />
             </button>
           </div>
         </div>
+
+        <ol id="sessions-rail" ref={rail} className="rail" tabIndex={0} aria-label={copy.sessions.rail}>
+          {sessions.map((s, i) => {
+            const st = status(s, now);
+            return (
+              <li key={s.id} className="session" data-i={i} data-reveal="up" data-delay={String(i * 0.06)}>
+                <article aria-labelledby={`session-${s.id}`} data-pending={s.pending.join(" · ")}>
+                  <div className="session__poster">
+                    <SiteImg image={s.poster} label={copy.sessions.posterSoon} />
+                    {st.upcoming && <span className="session__tag">{st.text}</span>}
+                  </div>
+                  <div className="session__body">
+                    <p className="session__kicker">{s.presenter ?? s.venue}</p>
+                    <h3 id={`session-${s.id}`} className="session__title">
+                      {s.title}
+                    </h3>
+                    <p className="session__sub">{s.subtitle}</p>
+                    <dl className="session__meta">
+                      <div>
+                        <dt>{copy.sessions.meta.date}</dt>
+                        <dd>
+                          {s.date ? weekdayDayMonth(s.date) : copy.sessions.noDate}
+                          {s.time ? ` · ${time12(s.time)}` : ""}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>{copy.sessions.meta.venue}</dt>
+                        <dd>{s.venue}</dd>
+                      </div>
+                      {s.address && (
+                        <div>
+                          <dt>{copy.sessions.meta.where}</dt>
+                          <dd>{s.address}</dd>
+                        </div>
+                      )}
+                      {s.genres.length > 0 && (
+                        <div>
+                          <dt>{copy.sessions.meta.genres}</dt>
+                          <dd>{s.genres.join(" · ")}</dd>
+                        </div>
+                      )}
+                    </dl>
+                    {!st.upcoming && <p className="session__status">{st.text}</p>}
+                  </div>
+                </article>
+              </li>
+            );
+          })}
+        </ol>
+        <p className="rail-hint">{copy.sessions.hint}</p>
 
         <div className="sessions__cta" data-reveal="up">
           <Button
