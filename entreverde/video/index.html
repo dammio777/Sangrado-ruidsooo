@@ -310,7 +310,7 @@ async function build() {
   // ================= ESCENA 3 · Montaje del lugar =================
   const s3 = el('div', 'scene', stage); S.s3 = s3; s3.style.background = C.primario;
   const shots = [
-    { src: 'hd_vertical_cielo', w: 1656, chip: 'Entreverde · Santa Elena', lines: ['Experiencias', 'para la gente', '<i style="color:' + C.acento + '">que quiere compartir.</i>'], size: 104, pan: [0.5, 0.5] },
+    { src: 'hd_vertical_cielo', w: 1656, chip: 'Reapertura · Santa Elena', lines: ['Experiencias', 'para la gente', '<i style="color:' + C.acento + '">que quiere compartir.</i>'], size: 104, pan: [0.5, 0.5] },
     { src: 'hd_aviso', w: 3926, chip: 'El lugar', lines: [B.destacada[0]], size: 128, pan: [0.48, 0.66] },
     { src: 'hd_terraza', w: 1656, chip: 'La terraza', lines: [B.destacada[1]], size: 128, pan: [0.5, 0.5] },
     { src: 'hd_banderas_noche', w: 2944, chip: 'Las noches', lines: [B.destacada[2]], size: 112, pan: [0.08, 0.72] },
@@ -326,6 +326,22 @@ async function build() {
     const ls = maskLines(capd, s.lines, 'tit', { fontSize: s.size + 'px' });
     return { ...s, d, im, chip, cnt, ls };
   });
+  // sello de reapertura: grande al abrir el montaje, luego queda como sticker en la esquina
+  const ring = `${B.reapertura.anillo} · `;
+  S.badge = el('div', 'abs', s3, `
+    <svg viewBox="0 0 360 360" width="360" height="360" style="position:absolute;left:0;top:0;overflow:visible">
+      <defs><path id="ringPath" d="M180,180 m-138,0 a138,138 0 1,1 276,0 a138,138 0 1,1 -276,0"/></defs>
+      <circle cx="180" cy="180" r="176" fill="${C.acento}"/>
+      <circle cx="180" cy="180" r="112" fill="none" stroke="${C.primario}" stroke-width="2" stroke-dasharray="3 7" opacity=".55"/>
+      <g class="ringTxt"><text font-family="Montserrat" font-weight="600" font-size="21" letter-spacing="4" fill="${C.primario}"><textPath href="#ringPath" textLength="856" lengthAdjust="spacing">${ring}</textPath></text></g>
+    </svg>
+    <div style="position:absolute;left:0;top:118px;width:360px;text-align:center;color:${C.primario}">
+      <div style="font:600 17px/1 ${B.fuentes.etiqueta};letter-spacing:.3em;text-transform:uppercase;opacity:.85">${B.reapertura.arriba}</div>
+      <div style="font:500 italic 76px/1.05 ${B.fuentes.titular};margin-top:8px">${B.reapertura.titulo}</div>
+      <div style="width:42px;margin:6px auto 0;color:${C.primario}">${LOGO.logo_marca}</div>
+    </div>`);
+  css(S.badge, { left: 0, top: 0, width: '360px', height: '360px', zIndex: 20, filter: 'drop-shadow(0 18px 40px rgba(42,45,35,.35))', transformOrigin: '50% 50%' });
+  S.badgeRing = S.badge.querySelector('.ringTxt');
 
   // ================= ESCENA 4 · Una experiencia para compartir =================
   const s4 = el('div', 'scene', stage); S.s4 = s4;
@@ -491,6 +507,11 @@ function render(t) {
       s.cnt.style.opacity = ck;
       s.ls.forEach((l, j) => { const lk = eo(P(t, a + .35 + j * .15, a + 1.0 + j * .15)); l.style.transform = `translateY(${(1 - lk) * 112}%)`; });
     });
+    // sello de reapertura
+    const bin = P(t, 15.45, 16.05), mv = eio(P(t, 17.15, 17.75)), bout = P(t, 25.35, 25.7);
+    const bx = lerp(740, 905, mv), by = lerp(430, 335, mv), bs = lerp(1, .5, mv) * lerp(.4, 1, back(bin));
+    css(S.badge, { opacity: clamp(bin * 3) * (1 - bout), transform: `translate(${bx - 180}px,${by - 180 + sin(t * 1.4) * 6 * (1 - mv)}px) scale(${bs}) rotate(${lerp(-24, 0, eo(bin))}deg)` });
+    S.badgeRing.setAttribute('transform', `rotate(${(t - 15.45) * 22} 180 180)`);
   }
 
   // ===================== ESCENA 4 =====================

@@ -212,6 +212,8 @@ add(bell(1760, 0.045), 11.9, 1.0, 0.0, 0.3)               # "Enviado a 3 amigos"
 for tt in (12.6, 13.3):                                   # notificaciones
     add(bell(1318.5, 0.06), tt, 1.0, 0.0, 0.3)
     add(bell(1975.5, 0.045), tt + 0.09, 1.0, 0.0, 0.3)
+add(pop(0.12), 15.5, 1.0, 0.25, 0.2)                      # sello de reapertura
+add(bell(1568, 0.05), 15.58, 1.0, 0.25, 0.35)
 add(pop(0.06), 25.6, 1.0, -0.3, 0.15)                     # polaroids
 add(pop(0.06), 25.7, 1.0, 0.3, 0.15)
 add(bell(2349, 0.03), 31.95, 1.0, 0.0, 0.4)               # último corazón

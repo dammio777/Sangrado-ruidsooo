@@ -36,6 +36,9 @@ window.BRAND = {
   // Texto real de la historia destacada "Ubicación"
   destacada: ["Buena comida,", "brisa natural", "y el mejor ambiente.", "Te esperamos", "bajo el cielo abierto."],
 
+  // Momento de la marca: reapertura (dato del cliente)
+  reapertura: { arriba: "Estamos de", titulo: "Reapertura", anillo: "Reapertura · Entreverde · Santa Elena" },
+
   // Cierre: contacto de la agencia (pendiente)
   agencia: { nombre: "[TU AGENCIA]", contacto: "[TU @ / WHATSAPP]" },
 };
