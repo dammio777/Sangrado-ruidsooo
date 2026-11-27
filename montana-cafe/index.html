@@ -1,0 +1,242 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--teal:#24414A;--deep:#18292F;--orange:#C8693A;--cream:#F1E8D6;--kraft:#C9A77C;--ink:#0E1A1E}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:540px;height:960px;overflow:hidden;background:var(--deep);font-family:Montserrat,sans-serif;color:var(--cream)}
+#stage{position:absolute;inset:0;overflow:hidden}
+.abs{position:absolute}
+.sc{position:absolute;inset:0;opacity:0}
+.serif{font-family:'Cormorant Garamond',serif}
+.bg{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 30%,#2E525C 0%,#1E363E 55%,#132228 100%)}
+.grain{position:absolute;inset:0;opacity:.13;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");mix-blend-mode:overlay;pointer-events:none;z-index:50}
+.marq{position:absolute;white-space:nowrap;font-family:'Cormorant Garamond',serif;font-size:150px;color:rgba(241,232,214,.07);letter-spacing:2px}
+.kicker{position:absolute;left:0;right:0;text-align:center;font-size:11px;letter-spacing:4px;font-weight:600}
+/* card */
+.card{position:absolute;left:40px;top:135px;width:460px;height:430px;background:#E9E2D3;border-radius:22px;box-shadow:0 30px 60px rgba(0,0,0,.35);color:var(--ink);overflow:hidden}
+.card .bar{height:38px;border-bottom:1px solid rgba(0,0,0,.08);display:flex;align-items:center;padding-left:16px;gap:6px;font-size:9.5px;letter-spacing:2px;font-weight:600}
+.dot{width:9px;height:9px;border-radius:50%}
+.sw{position:absolute;top:262px;width:50px;height:50px;border-radius:12px}
+.swl{position:absolute;top:318px;width:60px;text-align:center;font-size:7.5px;font-weight:600;letter-spacing:.5px}
+.lbl{position:absolute;font-size:8.5px;letter-spacing:2.5px;font-weight:700}
+/* phone */
+.phone{position:absolute;width:270px;height:560px;border-radius:40px;background:#0b0f11;border:7px solid #1d2326;box-shadow:0 40px 80px rgba(0,0,0,.45);overflow:hidden}
+.scr{position:absolute;inset:0;background:#0F1416;overflow:hidden;font-size:9px;color:#eee}
+.st{height:30px;display:flex;justify-content:space-between;padding:10px 20px 0;font-size:9px;font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px}
+.grid div{aspect-ratio:4/5;background-size:cover;background-position:center;position:relative;overflow:hidden}
+.btn{flex:1;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:8.5px}
+.pill{position:absolute;background:rgba(241,232,214,.88);color:var(--teal);border-radius:12px;padding:6px 12px;font-size:7px;letter-spacing:1.5px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.pill i{display:block;font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:0;font-weight:600;color:var(--ink);margin-top:1px}
+.cm{position:absolute;left:12px;background:rgba(255,255,255,.92);color:#222;border-radius:14px;padding:5px 10px 5px 5px;font-size:8.5px;display:flex;align-items:center;gap:6px;font-weight:500}
+.cm b{width:16px;height:16px;border-radius:50%;display:block}
+.heart{position:absolute;color:#E64A5B;font-size:16px}
+.ntf{position:absolute;left:8px;right:8px;background:rgba(240,240,240,.95);color:#111;border-radius:14px;padding:7px 9px;font-size:7.5px;display:flex;gap:7px;align-items:center}
+.ntf img{width:20px;height:20px;border-radius:6px}
+/* photo */
+.ph{position:absolute;inset:0;background-size:cover;background-position:center}
+.shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,26,30,.45) 0%,rgba(14,26,30,0) 25%,rgba(14,26,30,0) 55%,rgba(14,26,30,.75) 100%)}
+.cap{position:absolute;left:34px;right:30px;bottom:150px;font-family:'Cormorant Garamond',serif;font-size:44px;line-height:1.05;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.4)}
+.cap em{color:var(--kraft)}
+.tag{position:absolute;top:44px;left:30px;font-size:8px;letter-spacing:2.5px;font-weight:700;background:rgba(241,232,214,.2);backdrop-filter:blur(6px);border:1px solid rgba(241,232,214,.35);padding:6px 11px;border-radius:12px}
+.cnt{position:absolute;top:50px;right:30px;font-size:9px;letter-spacing:2px;font-weight:600}
+.pol{position:absolute;width:180px;background:#F6F1E6;padding:10px 10px 34px;border-radius:4px;box-shadow:0 20px 40px rgba(0,0,0,.35)}
+.pol div{width:160px;height:170px;background-size:cover;background-position:center}
+.pol p{position:absolute;bottom:9px;left:0;right:0;text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;color:#555;font-size:13px}
+.ico{position:absolute;width:30px;height:30px;border-radius:50%;background:rgba(241,232,214,.85);color:var(--teal);display:flex;align-items:center;justify-content:center;font-size:13px}
+</style></head><body><div id="stage">
+<div class="bg"></div>
+
+<!-- S1 brand kit -->
+<div class="sc" id="s1">
+  <div class="marq" id="m1" style="top:640px">montaña · frío & café · montaña · frío & café ·</div>
+  <div class="kicker" style="top:92px" id="k1">IMAGINA TUS REDES ASÍ</div>
+  <div class="card" id="card">
+    <div class="bar"><span class="dot" style="background:#C8693A"></span><span class="dot" style="background:#C9A77C"></span><span class="dot" style="background:#24414A"></span>&nbsp;&nbsp;MONTAÑA, FRÍO &amp; CAFÉ · KIT DE MARCA</div>
+    <img id="klogo" src="a/logo.png" class="abs" style="left:160px;top:56px;width:140px;height:140px;border-radius:50%;border:5px solid #F6F1E6;box-shadow:0 10px 25px rgba(0,0,0,.2)">
+    <div class="lbl" style="left:24px;top:240px">PALETA</div>
+    <div class="sw" id="w0" style="left:24px;background:#18292F"></div><div class="swl" id="l0" style="left:19px">#18292F</div>
+    <div class="sw" id="w1" style="left:92px;background:#24414A"></div><div class="swl" id="l1" style="left:87px">#24414A</div>
+    <div class="sw" id="w2" style="left:160px;background:#C8693A"></div><div class="swl" id="l2" style="left:155px">#C8693A</div>
+    <div class="sw" id="w3" style="left:228px;background:#C9A77C"></div><div class="swl" id="l3" style="left:223px">#C9A77C</div>
+    <div class="sw" id="w4" style="left:296px;background:#F1E8D6;border:1px solid #ccc"></div><div class="swl" id="l4" style="left:291px">#F1E8D6</div>
+    <div id="typo" style="position:absolute;left:24px;top:345px;display:flex;align-items:center;gap:12px">
+      <span class="lbl" style="position:static">TIPOGRAFÍA</span></div>
+    <div id="typo2" style="position:absolute;left:24px;top:362px;display:flex;align-items:baseline;gap:10px">
+      <span class="serif" style="font-size:30px">Aa</span><span class="serif" style="font-size:30px;font-style:italic;color:#C8693A">Aa</span>
+      <span style="font-size:7.5px;letter-spacing:1.5px;font-weight:700;line-height:1.5">CORMORANT GARAMOND<br>MONTSERRAT</span></div>
+    <div class="abs" style="left:24px;bottom:18px;font-size:10px" id="ptxt">Preparando tus redes…</div>
+    <div class="abs" style="right:24px;bottom:22px;width:170px;height:5px;border-radius:3px;background:rgba(0,0,0,.1)"><div id="prog" style="height:100%;width:0;border-radius:3px;background:#C8693A"></div></div>
+  </div>
+  <div class="abs serif" id="asi" style="left:0;right:0;top:600px;text-align:center;font-size:30px;line-height:1.15">Así serían<br>tus redes sociales<br><em style="color:#C9A77C">si trabajaras conmigo.</em></div>
+</div>
+
+<!-- S2-4 phone -->
+<div class="sc" id="s2">
+  <div class="marq" id="m2" style="top:30px;font-size:120px">COMPARTIR · COMPARTIR · COMPARTIR ·</div>
+  <div class="marq" id="m3" style="top:800px;font-size:120px">CAFÉ DE MONTAÑA · CAFÉ DE MONTAÑA ·</div>
+  <div class="pill" id="pill" style="left:40px;top:120px">PROPUESTA<i>Café que se comparte</i></div>
+  <div class="phone" id="phone" style="left:135px;top:200px">
+    <div class="scr" id="prof">
+      <div id="profin" style="position:absolute;left:0;right:0;top:0">
+      <div class="st"><span>9:41</span><span>●●● ▮</span></div>
+      <div style="display:flex;justify-content:space-between;padding:4px 14px;font-weight:700;font-size:11px"><span>‹ &nbsp;montanafrioycafe</span><span>🔔 ⋯</span></div>
+      <div style="display:flex;align-items:center;padding:8px 14px;gap:16px">
+        <img src="a/logo.png" style="width:62px;height:62px;border-radius:50%;border:2px solid #C8693A">
+        <div style="flex:1"><div style="font-weight:700;font-size:10px;margin-bottom:5px">Montaña, Frío &amp; Café</div>
+          <div style="display:flex;justify-content:space-between;text-align:center;font-size:7px;gap:4px"><span><b style="font-size:11px">48</b><br>publicaciones</span><span><b style="font-size:11px">2.340</b><br>seguidores</span><span><b style="font-size:11px">310</b><br>seguidos</span></div></div></div>
+      <div style="padding:0 14px;line-height:1.45;font-size:8.5px">"Café de montaña para compartir" ☕<br>🇨🇴 100% arábico · Producto de Colombia<br>✈️ De Medellín para el mundo</div>
+      <div style="display:flex;gap:5px;padding:8px 14px"><div class="btn" style="background:#C8693A;color:#fff">Seguir</div><div class="btn" style="background:#262c2f">Mensaje</div></div>
+      <div style="display:flex;gap:12px;padding:4px 14px 10px;font-size:7.5px;text-align:center">
+        <div><div style="width:42px;height:42px;border-radius:50%;border:1.5px solid #555;background:url(a/cat.jpg) center/cover"></div>Amigos</div>
+        <div><div style="width:42px;height:42px;border-radius:50%;border:1.5px solid #555;background:url(a/paris2.jpg) center/cover"></div>Viajes</div>
+        <div><div style="width:42px;height:42px;border-radius:50%;border:1.5px solid #555;background:url(a/shelf2.jpg) center/cover"></div>Tienda</div>
+        <div><div style="width:42px;height:42px;border-radius:50%;border:1.5px solid #555;background:#24414A;display:flex;align-items:center;justify-content:center;font-size:16px">☕</div>Métodos</div></div>
+      <div style="display:flex;justify-content:space-around;padding:6px 0;border-top:1px solid #222;font-size:11px"><span>▦</span><span style="opacity:.5">▷</span><span style="opacity:.5">◉</span></div>
+      <div class="grid">
+        <div style="background-image:url(a/cat.jpg)"></div>
+        <div style="background:#24414A;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center"><img src="a/logo.png" style="width:22px;border-radius:50%;margin-bottom:6px"><span class="serif" style="font-size:12px;line-height:1.05;color:#F1E8D6">"El sabor<br>de Colombia<br><em style="color:#C9A77C">viajando por<br>el mundo"</em></span></div>
+        <div style="background-image:url(a/paris1.jpg)"></div>
+        <div style="background-image:url(a/shelf2.jpg)"></div>
+        <div style="background:#C8693A;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#F6F1E6"><span class="serif" style="font-size:20px;line-height:1">Est.<br>2023</span><span style="font-size:5.5px;letter-spacing:1.5px;margin-top:6px;font-weight:700">TOSTADO EN COLOMBIA</span></div>
+        <div style="background-image:url(a/paris2.jpg)"></div>
+        <div style="background:#F1E8D6;color:#24414A;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center"><span style="font-size:5.5px;letter-spacing:1.5px;font-weight:700">TIP DEL BARISTA</span><span class="serif" style="font-size:13px;line-height:1.05;margin-top:4px">1 cuchara<br>por taza,<br><em style="color:#C8693A">sin afán.</em></span></div>
+        <div style="background-image:url(a/shelf1.jpg)"></div>
+        <div style="background:#18292F;display:flex;align-items:center;justify-content:center;text-align:center"><span class="serif" style="font-size:13px;color:#F1E8D6;line-height:1.05">Montaña,<br>frío<br><em style="color:#C8693A">&amp; café.</em></span></div>
+        <div style="background-image:url(a/paris1.jpg);background-position:30% 60%"></div>
+        <div style="background-image:url(a/cat.jpg);background-position:20% 70%"></div>
+        <div style="background:#24414A"></div>
+      </div></div>
+    </div>
+    <!-- reel -->
+    <div class="scr" id="reel" style="opacity:0">
+      <div class="ph" id="reelimg" style="background-image:url(a/cat.jpg)"></div>
+      <div class="shade"></div>
+      <div class="st" style="position:relative"><span>9:41</span><span>●●● ▮</span></div>
+      <div style="position:absolute;top:34px;left:14px;font-weight:700;font-size:12px">Reels</div>
+      <div style="position:absolute;right:10px;bottom:90px;display:flex;flex-direction:column;gap:14px;font-size:15px;align-items:center"><span id="rh">♡</span><span>💬</span><span>➤</span><span>⋯</span></div>
+      <div style="position:absolute;left:12px;bottom:40px;right:40px;font-size:8px;line-height:1.5"><div style="display:flex;align-items:center;gap:6px;font-weight:700"><img src="a/logo.png" style="width:20px;border-radius:50%">montanafrioycafe <span style="border:1px solid #fff;border-radius:5px;padding:1px 5px;font-weight:500">Seguir</span></div>Un cafecito con amigos ☕🐾<br>♫ Audio original · montanafrioycafe</div>
+      <div class="cm" id="c1" style="bottom:200px"><b style="background:#C9A77C"></b>¡Quiero uno! 😍</div>
+      <div class="cm" id="c2" style="bottom:172px"><b style="background:#C8693A"></b>Etiqueta a tu parcero cafetero ☕</div>
+      <div class="cm" id="c3" style="bottom:144px"><b style="background:#24414A"></b>¿Vamos el sábado?</div>
+      <div class="heart" id="h1" style="right:14px">♥</div><div class="heart" id="h2" style="right:22px">♥</div><div class="heart" id="h3" style="right:10px">♥</div>
+      <div id="toast" style="position:absolute;left:40px;right:40px;top:230px;background:rgba(245,245,245,.96);color:#111;border-radius:16px;padding:12px;text-align:center;font-size:9px;font-weight:600">
+        <div style="display:flex;justify-content:center;margin-bottom:6px"><b style="width:26px;height:26px;border-radius:50%;background:#C9A77C;border:2px solid #fff"></b><b style="width:26px;height:26px;border-radius:50%;background:#C8693A;border:2px solid #fff;margin-left:-8px"></b><b style="width:26px;height:26px;border-radius:50%;background:#24414A;border:2px solid #fff;margin-left:-8px"></b></div>✔ Enviado a 3 amigos</div>
+      <div class="ntf" id="n1" style="top:34px"><img src="a/logo.png"><div><b>Instagram</b> · ahora<br>A 128 personas les gustó tu publicación</div></div>
+      <div class="ntf" id="n2" style="top:74px"><img src="a/logo.png"><div><b>Instagram</b> · ahora<br>Tu reel se compartió 42 veces ☕</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S5 photos -->
+<div class="sc" id="s5">
+  <div class="ph" id="p0" style="background-image:url(a/cat.jpg)"></div>
+  <div class="ph" id="p1" style="background-image:url(a/shelf2.jpg);background-position:50% 60%"></div>
+  <div class="ph" id="p2" style="background-image:url(a/paris1.jpg)"></div>
+  <div class="ph" id="p3" style="background-image:url(a/paris2.jpg)"></div>
+  <div class="shade"></div>
+  <div class="tag" id="tag">MONTAÑA, FRÍO &amp; CAFÉ · MEDELLÍN</div>
+  <div class="cnt" id="cnt">01/04</div>
+  <div class="cap" id="cap0">Café de montaña,<br><em>para compartir</em></div>
+  <div class="cap" id="cap1">tostado<br><em>con calma,</em></div>
+  <div class="cap" id="cap2">el sabor<br><em>de Colombia</em></div>
+  <div class="cap" id="cap3">viajando<br><em>por el mundo.</em></div>
+</div>
+
+<!-- S6 polaroids -->
+<div class="sc" id="s6">
+  <div class="ph" style="background-image:url(a/cat.jpg);filter:blur(18px) brightness(.55);transform:scale(1.2)"></div>
+  <div class="marq" id="m4" style="top:20px;font-size:120px;color:rgba(241,232,214,.1)">COMPARTIR · COMPARTIR ·</div>
+  <div class="pol" id="pa" style="left:60px;top:250px"><div style="background-image:url(a/cat.jpg)"></div><p>tú…</p></div>
+  <div class="pol" id="pb" style="left:290px;top:262px"><div style="background-image:url(a/paris1.jpg)"></div><p>…y alguien más</p></div>
+  <div class="ico" id="i1" style="left:50px;top:236px">➤</div>
+  <div class="ico" id="i2" style="left:440px;top:240px">💬</div>
+  <div class="ico" id="i3" style="left:240px;top:470px">♡</div>
+  <div class="abs serif" id="t6" style="left:0;right:0;top:540px;text-align:center;font-size:20px;line-height:1.2"><span style="font-size:17px;opacity:.85">No es solo café.</span><br><span style="font-size:32px">Es un momento</span><br><em style="font-size:32px;color:#C9A77C">para compartir.</em></div>
+</div>
+
+<!-- S7 end -->
+<div class="sc" id="s7">
+  <div class="marq" id="m5" style="top:760px">montaña · frío & café · montaña ·</div>
+  <div class="abs serif" id="anim" style="left:0;right:0;top:330px;text-align:center;font-size:58px"></div>
+  <div class="abs" id="lockup" style="left:0;right:0;top:450px;display:flex;justify-content:center;align-items:center;gap:16px">
+    <img src="a/logo.png" style="width:78px;height:78px;border-radius:50%;border:3px solid #F1E8D6">
+    <span style="font-size:14px;opacity:.7">×</span>
+    <div style="width:78px;height:78px;border-radius:50%;background:#F1E8D6;color:#24414A;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;letter-spacing:1px;text-align:center">TU<br>LOGO</div></div>
+  <div class="abs" id="sig" style="left:0;right:0;top:560px;text-align:center;font-size:9px;letter-spacing:2.5px;font-weight:600;line-height:1.9">MONTAÑA, FRÍO &amp; CAFÉ × [TU AGENCIA]<br><span style="opacity:.6">[TU @ / WHATSAPP]</span></div>
+  <div class="abs" id="eh" style="left:0;right:0;top:610px;text-align:center;color:#C8693A;font-size:18px">♥</div>
+</div>
+<div class="grain"></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>{x=cl(x);return 1-Math.pow(1-x,3)};
+const eio=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+const back=x=>{x=cl(x);const c=1.70158,c3=c+1;return 1+c3*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const p=(t,a,d)=>cl((t-a)/d);
+function fadeSc(id,t,a,b,f=.4){const o=Math.min(p(t,a,f),1-p(t,b-f,f));$(id).style.opacity=o;return o>0}
+function show(el,t,a,d=.5,dy=20,sc=false){const k=sc?back(p(t,a,d)):ease(p(t,a,d));el.style.opacity=cl(p(t,a,d*0.7));el.style.transform=sc?`scale(${.6+.4*k})`:`translateY(${(1-k)*dy}px)`}
+const ANIM="¿Te animas?";
+window.setT=function(t){
+  // S1 0-6.2
+  if(fadeSc('s1',t,0,6.2)){
+    $('m1').style.transform=`translateX(${-t*40}px)`;
+    show($('k1'),t,.1,.6);$('k1').style.opacity=cl(p(t,.1,.4))*(1-p(t,4.5,.3));
+    const cs=1-eio(p(t,4.6,.6))*.15, cy=-eio(p(t,4.6,.6))*70;
+    $('card').style.opacity=cl(p(t,.2,.4))*(1-p(t,5.0,.6)*0.0);
+    $('card').style.transform=`translateY(${(1-ease(p(t,.2,.7)))*60+cy}px) scale(${cs})`;
+    show($('klogo'),t,.7,.7,0,true);
+    for(let i=0;i<5;i++){show($('w'+i),t,1.4+i*.22,.45,0,true);show($('l'+i),t,1.55+i*.22,.4,8)}
+    show($('typo'),t,2.8,.5,10);show($('typo2'),t,3.0,.5,10);
+    $('prog').style.width=(eio(p(t,1,3.4))*100)+'%';
+    $('ptxt').textContent=t>4.4?'¡Listo! ☕':'Preparando tus redes…';
+    show($('asi'),t,4.9,.8,25);
+  }
+  // S2 phone 6-17.4
+  if(fadeSc('s2',t,6,17.4)){
+    $('m2').style.transform=`translateX(${-(t-6)*35}px)`;$('m3').style.transform=`translateX(${-600+(t-6)*35}px)`;
+    const ph=$('phone');
+    const inK=ease(p(t,6,1));
+    const rot=(1-inK)*-8;
+    ph.style.transform=`translateY(${(1-inK)*500}px) rotate(${rot}deg)`;
+    show($('pill'),t,8.6,.6,15);
+    const sc=eio(p(t,9.4,2.4)); $('profin').style.transform=`translateY(${-sc*215}px)`;
+    const r=eio(p(t,12.2,.6)); $('reel').style.opacity=r; $('reel').style.transform=`translateY(${(1-r)*40}px)`;
+    $('pill').querySelector('i').textContent=t<12.2?'Un perfil que enamora':'Café que se comparte';
+    $('reelimg').style.transform=`scale(${1.05+(t-12)*.012})`;
+    show($('c1'),t,13.0,.4,12);show($('c2'),t,13.5,.4,12);show($('c3'),t,14.0,.4,12);
+    $('rh').textContent=t>13.2?'♥':'♡';$('rh').style.color=t>13.2?'#E64A5B':'';
+    [['h1',13.2],['h2',13.6],['h3',14.1]].forEach(([id,a])=>{const k=p(t,a,1.6);const e=$(id);e.style.bottom=(110+k*180)+'px';e.style.opacity=k>0&&k<1?1-k:0;e.style.transform=`scale(${.6+k})`});
+    const tk=p(t,14.6,.4),to=1-p(t,15.8,.3);$('toast').style.opacity=Math.min(tk,to);$('toast').style.transform=`scale(${.8+.2*back(tk)})`;
+    show($('n1'),t,15.9,.45,-30);show($('n2'),t,16.3,.45,-30);
+  }
+  // S5 photos 17-27.2
+  if(fadeSc('s5',t,17,27.2,.35)){
+    const segs=[17,19.6,22.2,24.6,27.2];
+    for(let i=0;i<4;i++){const a=segs[i],b=segs[i+1];const pe=$('p'+i);const o=i==0?1:cl((t-a)/.35);pe.style.opacity=t<a?0:o;pe.style.zIndex=i;
+      pe.style.transform=`scale(${1.12-0.08*p(t,a,b-a+0.4)}) translateX(${(i%2?-1:1)*8*p(t,a,b-a)}px)`;
+      const c=$('cap'+i);c.style.zIndex=10;const vis=t>=a&&t<b-.1;c.style.opacity=vis?Math.min(p(t,a+.2,.5),1-p(t,b-.45,.35)):0;c.style.transform=`translateY(${(1-ease(p(t,a+.2,.7)))*25}px)`;
+      if(t>=a&&t<b)$('cnt').textContent='0'+(i+1)+'/04'}
+    $('tag').style.zIndex=$('cnt').style.zIndex=10;document.querySelector('#s5 .shade').style.zIndex=5;
+    $('tag').textContent=t<22.2?'MONTAÑA, FRÍO & CAFÉ · MEDELLÍN':'MONTAÑA, FRÍO & CAFÉ · PARÍS';
+  }
+  // S6 27-30.8
+  if(fadeSc('s6',t,27,30.8)){
+    $('m4').style.transform=`translateX(${-(t-27)*40}px)`;
+    const a=back(p(t,27.2,.7)),b=back(p(t,27.5,.7));
+    $('pa').style.opacity=cl(p(t,27.2,.3));$('pa').style.transform=`translateY(${(1-a)*200}px) rotate(${-6+(1-a)*-10}deg)`;
+    $('pb').style.opacity=cl(p(t,27.5,.3));$('pb').style.transform=`translateY(${(1-b)*200}px) rotate(${5+(1-b)*10}deg)`;
+    show($('i1'),t,28.0,.4,0,true);show($('i2'),t,28.2,.4,0,true);show($('i3'),t,28.4,.4,0,true);
+    show($('t6'),t,28.3,.8,20);
+  }
+  // S7 30.6-33.5
+  if(fadeSc('s7',t,30.6,34.5)){
+    $('m5').style.transform=`translateX(${-(t-30)*40}px)`;
+    let h='';[...ANIM].forEach((ch,i)=>{const k=ease(p(t,30.8+i*.045,.45));h+=`<span style="display:inline-block;opacity:${k};transform:translateY(${(1-k)*30}px)">${ch==' '?'&nbsp;':ch}</span>`});$('anim').innerHTML=h;
+    show($('lockup'),t,31.6,.6,0,true);show($('sig'),t,32.0,.6,10);
+    const hk=p(t,32.5,.5);$('eh').style.opacity=hk;$('eh').style.transform=`scale(${.5+.5*back(hk)+Math.sin(t*6)*.05*hk})`;
+  }
+};
+setT(0);
+</script></body></html>
